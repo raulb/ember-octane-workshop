@@ -137,8 +137,7 @@ Seems like it should work. Let's try it!
 Oops! we'll get an error.
 
 ```
-login-form.js:23 Uncaught TypeError: this.handleSignIn is not a function
-    at HTMLFormElement.onLoginFormSubmit (login-form.js:23)
+You accessed `this.handleSignIn` from a function passed to the `on` modifier, but the function itself was not bound to a valid `this` context. Consider updating to usage of `@action`.
 ```
 
 Let's dig deeper to investigate using a `debugger;`
@@ -160,6 +159,8 @@ onLoginFormSubmit(evt) {
 Can you spot the problem? What about `this`?
 
 The way the DOM API works, event handlers are called with `this` as the DOM element that received the event. This is not good in our case -- we want `this` to be the `<LoginForm />` component instance.
+
+Ember has helpfully added a proxy in development mode to give us a more useful error message and suggest the following course of action.
 
 To fix this, we'll have to `bind` the `onLoginFormSubmit` method, so that no matter who invokes it or how, `this` will always be the component instance. In Ember Octane, this can be done easily by applying the **action decorator**
 
