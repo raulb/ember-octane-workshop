@@ -40,13 +40,13 @@ Let's begin by creating a dedicated `<LoginForm/>` component that we can use in 
 Please run
 
 ```sh
-ember generate component login-form
+ember generate component login-form --with-component-class
 ```
 
 and observe that three files are created
 
+- [`app/components/login-form.hbs`](../app/components/login-form.hbs) - The component's template
 - [`app/components/login-form.js`](../app/components/login-form.js) - The component JS module
-- [`app/templates/components/login-form.hbs`](../app/templates/components/login-form.hbs) - The component's template
 - [`tests/integration/components/login-form-test.js`](../tests/integration/components/login-form-test.js) - An integration test for the component
 
 1. Move the contents of [`app/templates/login.hbs`](../app/templates/login.hbs) into the [`app/templates/components/login-form.hbs`](../app/templates/components/login-form.hbs) template
