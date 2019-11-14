@@ -92,10 +92,7 @@ and in [`app/templates/components/login-form.hbs`](../app/templates/components/l
 Now let's try changing the `<select>` again. You'll probably end up seeing an error message like this:
 
 ```
-Assertion Failed: You must use set() to set the `userId` property (of [object Object]) to `2`.
-    at assert (index.js:163)
-    at LoginFormComponent.SETTER_FUNCTION [as userId] (metal.js:933)
-    at LoginFormComponent.onSelectChanged (login-form.js:29)
+Assertion Failed: You attempted to update [object Object].userId to "1", but it is being tracked by a tracking context, such as a template, computed property, or observer. In order to make sure the context updates properly, you must invalidate the property when updating it. You can mark the property as `@tracked`, or use `@ember/object#set` to do this.
 ```
 
 What we're seeing is evidence that class fields work for the initial render without any special treatment, _until their value is mutated_. If we expect properties to be mutated, and those changes to cause re-renders we'll need to opt in to change tracking.
