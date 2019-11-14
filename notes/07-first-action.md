@@ -162,7 +162,16 @@ The way the DOM API works, event handlers are called with `this` as the DOM elem
 
 Ember has helpfully added a proxy in development mode to give us a more useful error message and suggest the following course of action.
 
-To fix this, we'll have to `bind` the `onLoginFormSubmit` method, so that no matter who invokes it or how, `this` will always be the component instance. In Ember Octane, this can be done easily by applying the **action decorator**
+To fix this, we'll have to `bind` the `onLoginFormSubmit` method, so that no matter who invokes it or how, `this` will always be the component instance. In Ember Octane, this can be done easily by applying the **action decorator**.
+
+First import the decorator:
+
+```js
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+```
+
+Then apply it to our `onLoginFormSubmit` method:
 
 ```js
 /**
