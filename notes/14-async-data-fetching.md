@@ -11,7 +11,7 @@ We will be creating/editing the following files:
 - [`../app/routes/teams/team.js`](../app/routes/teams/team.js)
 - [`../app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js)
 - [`../app/services/auth.js`](../app/services/auth.js)
-- [`../app/templates/components/login-form.hbs`](../app/templates/components/login-form.hbs)
+- [`../app/components/login-form.hbs`](../app/components/login-form.hbs)
 - [`../app/templates/login.hbs`](../app/templates/login.hbs)
 - [`../tests/test-helpers/auth-service.js`](../tests/test-helpers/auth-service.js)
 - [`../tests/integration/components/login-form-test.js`](../tests/integration/components/login-form-test.js)
@@ -211,7 +211,7 @@ In the [`login`](../app/templates/login.hbs) template, pass the model data into 
 +   <LoginForm @users={{this.model}}/>
 ```
 
-In the [`login-form`](`../app/templates/components/login-form.hbs`) component template, replace the hard coded values in the user selection dropdown to dynamic values fetched from server. Here `@users` contains the dynamic data that was feed into it from the `login.hbs` template.
+In the [`login-form`](`../app/components/login-form.hbs`) component template, replace the hard coded values in the user selection dropdown to dynamic values fetched from server. Here `@users` contains the dynamic data that was feed into it from the `login.hbs` template.
 
 ```diff
 -   <option selected={{eq this.userId "1"}} value="1">Testy Testerson</option>

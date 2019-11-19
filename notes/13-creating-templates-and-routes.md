@@ -136,14 +136,14 @@ We have now configured routes to return hard coded static data from their respec
 
 Generally, in an ember application, templates are associated with a route or a component. And this decides their exact location inside the `app/templates` directory.
 
-For example, template files like [`team.hbs`](../app/templates/teams/team.hbs) which is present directly under the [`../app/templates`](../app/templates/) directory are templates associated with routes. And template files like [`team-sidebar.hbs`](../app/templates/components/team-sidebar.hbs) which is present under the [`../app/templates/components`](../app/templates/components) directory are templates associated with components.
+For example, template files like [`team.hbs`](../app/templates/teams/team.hbs) which is present directly under the [`../app/templates`](../app/templates/) directory are templates associated with routes. And template files like [`team-sidebar.hbs`](../app/components/team-sidebar.hbs) which is present under the [`../app/components`](../app/components) directory are templates associated with components.
 
 In this section, we will be creating/editing the following template files:
 
 - [`../app/templates/teams.hbs`](../app/templates/teams.hbs)
-- [`../app/templates/components/team-selector.hbs`](../app/templates/components/team-selector.hbs)
+- [`../app/components/team-selector.hbs`](../app/components/team-selector.hbs)
 - [`../app/templates/teams/team.hbs`](../app/templates/teams/team.hbs)
-- [`../app/templates/components/team-sidebar.hbs`](../app/templates/components/team-sidebar.hbs)
+- [`../app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs)
 - [`../app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs)
 
 First, refactor the [`teams`](../app/templates/teams.hbs) template by replacing the existing content with `TeamSelector` component, that gets passed the `teams` data into it, to be displayed in its own template.
@@ -167,7 +167,7 @@ First, refactor the [`teams`](../app/templates/teams.hbs) template by replacing 
 +   {{outlet}}
 ```
 
-Inside the `team-selector` component's template defined at [`../app/templates/components/team-selector.hbs`](../app/templates/components/team-selector.hbs), replace the existing content with code to iterate over the `teams` array that got passed into it, from the calling location (i.e. the `teams` template).
+Inside the `team-selector` component's template defined at [`../app/components/team-selector.hbs`](../app/components/team-selector.hbs), replace the existing content with code to iterate over the `teams` array that got passed into it, from the calling location (i.e. the `teams` template).
 
 The array iteration is done using handlebar's [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each) helper. For a full list of built-in Helpers, see the [`Ember.Templates.helpers`](https://api.emberjs.com/ember/release/classes/Ember.Templates.helpers/) API documentation.
 
@@ -214,7 +214,7 @@ Create a new template file(.hbs) corresponding to the child route `team` at `app
 +   {{outlet}}
 ```
 
-Now change the implementation for `team-sidebar` component's template defined at [`../app/templates/components/team-sidebar.hbs`](../app/templates/components/team-sidebar.hbs) to dynamically display the team name.
+Now change the implementation for `team-sidebar` component's template defined at [`../app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs) to dynamically display the team name.
 
 Here `@team` refers to the attribute that was passed in to this team-sidebar component's template.
 

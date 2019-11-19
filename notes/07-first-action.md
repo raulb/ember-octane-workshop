@@ -49,7 +49,7 @@ and observe that three files are created
 - [`app/components/login-form.js`](../app/components/login-form.js) - The component JS module
 - [`tests/integration/components/login-form-test.js`](../tests/integration/components/login-form-test.js) - An integration test for the component
 
-1. Move the contents of [`app/templates/login.hbs`](../app/templates/login.hbs) into the [`app/templates/components/login-form.hbs`](../app/templates/components/login-form.hbs) template
+1. Move the contents of [`app/templates/login.hbs`](../app/templates/login.hbs) into the [`app/components/login-form.hbs`](../app/components/login-form.hbs) template
 1. Use your new component in [`app/templates/login.hbs`](../app/templates/login.hbs). It should now only contain `<LoginForm />`
 
 ## "Sign In" action

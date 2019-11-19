@@ -4,7 +4,7 @@ While components are generally reusable, sometimes it's more convenient to use _
 
 ## The Notification Component
 
-Let's begin with a `<Notification />` component. Create the file [`app/templates/components/notification.hbs`](../app/templates/components/notification.hbs) as follows
+Let's begin with a `<Notification />` component. Create the file [`app/components/notification.hbs`](../app/components/notification.hbs) as follows
 
 ```hbs
 <div class="notification flex flex-row items-center bg-{{@notification.color}} text-white text-sm font-bold px-4 py-3 notification-transition {{if @notification.entering "entering" ""}} {{if @notification.leaving "leaving" ""}}"
@@ -102,7 +102,7 @@ export default class NotificationListComponent extends Component {
 }
 ```
 
-and its HBS file [`app/templates/components/notification-list.hbs`](../app/templates/components/notification-list.hbs) as
+and its HBS file [`app/components/notification-list.hbs`](../app/components/notification-list.hbs) as
 
 ```hbs
 <div class="notifications-container z-10">

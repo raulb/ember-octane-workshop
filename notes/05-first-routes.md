@@ -144,7 +144,7 @@ Ember provides a tool for this called [`<LinkTo>`](https://api.emberjs.com/ember
 
 `<LinkTo>` is a powerful tool, but for now we'll use it in a basic way: making the "Logout" button in the chat UI send the user to the login screen
 
-First, open up [`app/templates/components/team-sidebar.hbs`](../app/templates/components/team-sidebar.hbs) and find the `Logout` button near the bottom.
+First, open up [`app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs) and find the `Logout` button near the bottom.
 
 ```diff
 @ team-sidebar.hbs:44 @

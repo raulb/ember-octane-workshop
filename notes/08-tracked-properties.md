@@ -30,7 +30,7 @@ get isDisabled() {
 }
 ```
 
-Update the validation message in the component's template [`app/templates/components/login-form.hbs`](../app/templates/components/login-form.hbs)
+Update the validation message in the component's template [`app/components/login-form.hbs`](../app/components/login-form.hbs)
 
 ```diff
    <p class="text-blue text-xs italic my-4">
@@ -83,7 +83,7 @@ onSelectChanged(evt) {
 }
 ```
 
-and in [`app/templates/components/login-form.hbs`](../app/templates/components/login-form.hbs), find the `<select>` and use the `{{on}}` modifier, so that whenever the `"change"` event is fired, the `this.onSelectChanged` action is invoked
+and in [`app/components/login-form.hbs`](../app/components/login-form.hbs), find the `<select>` and use the `{{on}}` modifier, so that whenever the `"change"` event is fired, the `this.onSelectChanged` action is invoked
 
 ```hbs
 <select {{on "change" this.onSelectChanged}} >

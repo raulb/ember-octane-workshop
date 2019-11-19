@@ -58,7 +58,7 @@ Next, let's enhance our channel container by implementing a `createMessage` acti
   }
 ```
 
-In this component's template, let's create a new `acts` object that's yielded out, and pass our new action along as a property. Consumers can then do something like `channel.acts.createMessage` to access this function. Make the following change to [`app/templates/components/channel-container.hbs`](../app/templates/components/channel-container.hbs)
+In this component's template, let's create a new `acts` object that's yielded out, and pass our new action along as a property. Consumers can then do something like `channel.acts.createMessage` to access this function. Make the following change to [`app/components/channel-container.hbs`](../app/components/channel-container.hbs)
 
 ```diff
 <main class="flex-1 flex flex-col bg-white overflow-hidden channel"
@@ -116,7 +116,7 @@ export default class ChannelFooterComponent extends Component {
 }
 ```
 
-We'll need to hook this up with a few changes to our existing hbs file for this component [`app/templates/components/channel-footer.hbs`](`../app/templates/components/channel-footer.hbs`)
+We'll need to hook this up with a few changes to our existing hbs file for this component [`app/components/channel-footer.hbs`](`../app/components/channel-footer.hbs`)
 
 ```diff
     <input id="message-input" class="channel-footer__message-input w-full px-4"
@@ -134,7 +134,7 @@ We'll need to hook this up with a few changes to our existing hbs file for this 
   </form>
 ```
 
-Now let's hook up that submit event. Make one more change to [`app/templates/components/channel-footer.hbs`](`../app/templates/components/channel-footer.hbs`), to use the `{{on}}` modifier to fire an `this.onSubmit` action whenever the `<form>` fires its `"submit"` event.
+Now let's hook up that submit event. Make one more change to [`app/components/channel-footer.hbs`](`../app/components/channel-footer.hbs`), to use the `{{on}}` modifier to fire an `this.onSubmit` action whenever the `<form>` fires its `"submit"` event.
 
 ```diff
 <!-- Channel Footer -->

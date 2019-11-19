@@ -20,7 +20,7 @@ Ember calls values that are passed into a component from the outside world in th
 
 The goal of this task is to modify `<ChannelHeader />` such that we can pass in a title and description of our choice.
 
-in [`app/templates/components/channel-header.hbs`](../app/templates/components/channel-header.hbs)
+in [`app/components/channel-header.hbs`](../app/components/channel-header.hbs)
 
 1.  find the text `general` and replace it with `{{@title}}`
 2.  Find the text `Generally chatting about general things` and replace it with `{{@description}}`

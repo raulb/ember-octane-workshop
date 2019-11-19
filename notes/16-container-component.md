@@ -43,7 +43,7 @@ export default class ChannelContainerComponent extends Component {
 }
 ```
 
-Next, let's give ourselves a single DOM element "wrapper" around our container, and be sure to yield out the messages array so the "block" passed into our component can have access to them. In [`app/templates/components/channel-container.hbs`](../app/templates/components/channel-container.hbs), start with a template like
+Next, let's give ourselves a single DOM element "wrapper" around our container, and be sure to yield out the messages array so the "block" passed into our component can have access to them. In [`app/components/channel-container.hbs`](../app/components/channel-container.hbs), start with a template like
 
 ```hbs
 <main class="flex-1 flex flex-col bg-white overflow-hidden channel">
@@ -79,7 +79,7 @@ Now let's use our component in [`app/templates/teams/team/channel.hbs`](../app/t
 
 Next, we'll need to set things up so that messages load when the component renders, and whenever the channel changes. To accomplish this, we'll use "render modifiers", which are conceptually similar to lifecycle hook, in that they let us trigger actions when a DOM element is inserted, or when a tracked property updates.
 
-In [`app/templates/components/channel-container.hbs`](../app/templates/components/channel-container.hbs) we'll set up two modifiers: one for the initial render, and one for the `@channel` update
+In [`app/components/channel-container.hbs`](../app/components/channel-container.hbs) we'll set up two modifiers: one for the initial render, and one for the `@channel` update
 
 ```diff
 <main class="flex-1 flex flex-col bg-white overflow-hidden channel"
@@ -118,7 +118,7 @@ export default class ChannelContainerComponent extends Component {
 
 One piece of code that's worth pointing out is that last line in our new action: `this.messages = messages;`. This looks a little strange, but sheds light on the fact that _updates to tracked properties are triggered on assignment_. You can think of this like a `this.set('messages', this.get('messages'));` in the classic ember world, or `this.setState({ messages: this.messages });` in the react world.
 
-Messages should now load with the app, but they're visually identical regardless of the data passed to them. This is because we haven't parameterized them yet. In [`app/templates/components/chat-message.hbs`](../app/templates/components/chat-message.hbs) we can fix this by using the `@message` param that's now passed to this component
+Messages should now load with the app, but they're visually identical regardless of the data passed to them. This is because we haven't parameterized them yet. In [`app/components/chat-message.hbs`](../app/components/chat-message.hbs) we can fix this by using the `@message` param that's now passed to this component
 
 ```diff
  <!-- Message -->

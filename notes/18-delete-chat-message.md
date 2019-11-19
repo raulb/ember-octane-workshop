@@ -34,7 +34,7 @@ Begin by defining a new action on your `<ChannelContainer />` component [`app/co
 
 ```
 
-Now we can go to this component's template, and yield this action out [`app/templates/components/channel-container.hbs`](../app/templates/components/channel-container.hbs)
+Now we can go to this component's template, and yield this action out [`app/components/channel-container.hbs`](../app/components/channel-container.hbs)
 
 ```diff
     messages=this.messages
@@ -56,7 +56,7 @@ and in our "channel" top-level template, pass this `deleteMessage` action to eac
     {{/each}}
 ```
 
-Finally, let's go into the component, and hook the action up to the existing button. In [`app/templates/components/chat-message.hbs`](../app/templates/components/chat-message.hbs), make the following change
+Finally, let's go into the component, and hook the action up to the existing button. In [`app/components/chat-message.hbs`](../app/components/chat-message.hbs), make the following change
 
 ```diff
 - <button

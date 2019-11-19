@@ -92,7 +92,7 @@ The jsdoc comment above, for `AuthService`, improves the developer experience wh
 ## Changes in Templates
 
 Now that we have the javascript implementation in place, lets add the UI for the same.
-In `app/templates/components/team-sidebar.hbs`, replace the `LinkTo` component with a plain old HTML `button` element with an onclick handler that will trigger the `logout` action, that you defined in `app/services/auth.js`.
+In `app/components/team-sidebar.hbs`, replace the `LinkTo` component with a plain old HTML `button` element with an onclick handler that will trigger the `logout` action, that you defined in `app/services/auth.js`.
 
 ```diff
 -    <LinkTo @route='login' {{! destination route }}
