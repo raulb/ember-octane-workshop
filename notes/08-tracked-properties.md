@@ -45,7 +45,7 @@ And hook up `isDisabled` to the `input[type="submit"]`
   <input disabled={{this.isDisabled}} type="submit">
 ```
 
-We should also show some visual indication of whether this button is disabled. Replace the `"bg-grey"` class with a handlebars expression
+We should also show some visual indication of whether this button is disabled. Replace the `"bg-teal"` class with a handlebars expression
 
 ```hbs
   <input
