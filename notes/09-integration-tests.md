@@ -31,6 +31,7 @@ module('Integration | Component | login-form', function(hooks) {
       [
         'Login',
         'Select a user',
+        'Select a user',
         'Testy Testerson',
         'Sample McData',
       ]
@@ -130,6 +131,7 @@ assert.deepEqual(
     .split('\n'),
   [
     'Login',
+    'Select a user',
     'Select a user',
     'Testy Testerson',
     'Sample McData',
