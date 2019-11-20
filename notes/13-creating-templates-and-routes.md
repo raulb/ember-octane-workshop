@@ -8,7 +8,7 @@ Let's get started!
 
 The router file is where information about routes is stored. We are going to add two new child routes — `team` and `channel`. The `channel` route will be a child of the `team` route, which in turn will be a child of the `teams` (plural) route. This will give us a route hierarchy that is 3 levels deep.
 
-Configure the routes by modifying the [`router`](../app/router.js) file as follows:
+Configure the routes by modifying [`app/router.js`](../app/router.js) as follows:
 
 Replace this:
 
