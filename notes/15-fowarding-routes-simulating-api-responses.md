@@ -48,7 +48,7 @@ export default class IndexRoute extends Route {
 
   @service auth;
 
-  beforeModel(transition) {
+  beforeModel() {
     if (this.auth.isAuthenticated) {
       this.transitionTo('teams');
     } else {
@@ -59,24 +59,32 @@ export default class IndexRoute extends Route {
 }
 ```
 
-Similarly when a user tries to visit the `index` route under the `teams` or the `team` route, the user should be conditionally forwarded to different routes.
+Similarly, when we visit just `/teams` or just `/teams/some-id` then the app should take us to the logical route.
 
-For `teams` route, if there is at least 1 team, the first team should be automatically displayed. Else, the index route is displayed with an appropriate message saying that that are no teams to display.
+For the `teams` route, if there is at least 1 team then let’s display the first one. Otherwise, let’s display a suitable empty state.
 
-Add an `index` child route for `teams` route, at [`../app/routes/teams/index.js`](../app/routes/teams/index.js):
+Let’s generate `teams/index`:
 
-```diff
-+   import Route from '@ember/routing/route';
-+   import { isArray } from '@ember/array';
-+
-+   export default class TeamsIndexRoute extends Route {
-+     beforeModel(transition) {
-+       super.beforeModel(transition);
-+       const teams = this.modelFor('teams');
-+       if (teams && isArray(teams) && teams.length > 0)
-+         this.transitionTo('teams.team', teams[0].id);
-+     }
-+   }
+```
+$ ember g route teams/index
+```
+
+Now replace the contents of `app/routes/teams/index.js` with the following:
+
+```js
+import Route from '@ember/routing/route';
+
+export default class TeamsIndexRoute extends Route {
+
+  beforeModel() {
+    const [team] = this.modelFor('teams');
+
+    if (team) {
+      this.transitionTo('teams.team', team.id);
+    }
+  }
+
+}
 ```
 
 For `channels` route, if there is at least 1 channel associated with the selected team, the first channel is automatically displayed. Else, the index route under the channel route is displayed, with an appropriate message saying that that are no channels associated with the selected team.
