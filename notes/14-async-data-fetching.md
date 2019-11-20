@@ -1,170 +1,123 @@
 # Async Data Fetching
 
-In this exercise, we will be replacing the hard coded data that we added in previous exercises, with data fetched from server.
+In this exercise we will be replacing the hard coded data that we added in previous exercises with data fetched from server.
 
-For fetching data from server, we are going to use the [fetch](https://developers.google.com/web/updates/2015/03/introduction-to-fetch) method that is natively available in most modern browsers. In our app, we use the [ember-fetch](https://github.com/ember-cli/ember-fetch) ember addon that uses a polyfill for fetch method, in browsers that don't support the fetch method. You can find more info about browser support for fetch method [here](https://caniuse.com/#feat=fetch).
+For fetching data from server, we are going to use the [fetch](https://developers.google.com/web/updates/2015/03/introduction-to-fetch) method that is natively available in most modern browsers. In our app, we use the [ember-fetch](https://github.com/ember-cli/ember-fetch) ember addon that uses a polyfill for fetch method, in browsers that don't support the fetch method (and even in Node). You can find more info about browser support for fetch method [here](https://caniuse.com/#feat=fetch).
 
-We will be creating/editing the following files:
-
-- [`../app/routes/login.js`](../app/routes/login.js)
-- [`../app/routes/teams.js`](../app/routes/teams.js)
-- [`../app/routes/teams/team.js`](../app/routes/teams/team.js)
-- [`../app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js)
-- [`../app/services/auth.js`](../app/services/auth.js)
-- [`../app/components/login-form.hbs`](../app/components/login-form.hbs)
-- [`../app/templates/login.hbs`](../app/templates/login.hbs)
-- [`../tests/test-helpers/auth-service.js`](../tests/test-helpers/auth-service.js)
-- [`../tests/integration/components/login-form-test.js`](../tests/integration/components/login-form-test.js)
-
-Let's get started.
+Let's get started!
 
 ## Fetch data from server
 
-First, in the `login` route defined at [`../app/routes/login.js`](../app/routes/login.js), fetch the list of users. Start with adding an import for the `fetch` method:.
+First, in [`app/routes/login.js`](../app/routes/login.js) let’s fetch the list of users. Start by adding an import for the `fetch` method alongside the other imports:
 
-```diff
-+   import fetch from 'fetch';
+```js
+import fetch from 'fetch';
 ```
 
-Then, add a `model()` hook that returns the list of users fetched from server, by using the `fetch` method.
+Then add a `model` hook that returns the list of users fetched from server:
 
-```diff
-+   async model() {
-+     const resp = await fetch('/api/users');
-+     return resp.json();
-+   }
+```js
+async model() {
+  const response = await fetch('/api/users');
+  const users = await response.json();
+
+  return data;
+}
 ```
 
-In the `teams` route defined at [`../app/routes/teams.js`](../app/routes/teams.js), we need to fetch the following data related to the logged in user:
+In [`app/routes/teams.js`](../app/routes/teams.js), let’s fetch data about the logged-in user.
 
-- User information
-- list of related teams
+Once again, import `fetch` at the top of the file:
 
-Once again, import the `fetch` method at the top of the file, like we did for the login route:
-
-```diff
-+   import fetch from 'fetch';
+```js
+import fetch from 'fetch';
 ```
 
-If the user is logged in, the user's information should be loaded by calling the `loadCurrentUser()` method, that we are going to define in the `auth` service.
+Then replace the existing `beforeModel` hook with this:
 
-```diff
-+   } else {
-+     await this.auth.loadCurrentUser();
+```js
+async beforeModel(transition) {
+  if (this.auth.isAuthenticated) {
+    await this.auth.loadCurrentUser();
+  } else {
+    this.transitionTo('login');
+  }
+}
 ```
 
-The list of related teams is loaded, by making an ajax call using the `fetch()` method in the `model()` hook.
+In this hook, we:
 
-```diff
--   model() {
--     return ALL_TEAMS;
-+   async model() {
-+     const resp = await fetch('/api/teams');
-+     return resp.json();
+1. Check if the current user is logged-in.
+2. If they are, then we load their data
+3. If not, we transition to the login route
+
+Now let’s load the list of teams. Replace the existing `model` hook with this:
+
+```js
+async model() {
+  const response = await fetch('/api/teams');
+  const teams = await resp.json();
+
+  return teams;
+}
 ```
 
-Now that we are using data fetched from server, we don't need the hard coded array anymore. So, remove that.
+Now that we are fetching data from the server, we don't need the `ALL_TEAMS` array anymore so let’s delete it.
 
-```diff
--   export const ALL_TEAMS = [
--     {
--       id: 'li',
--       name: 'LinkedIn',
--       order: 2,
--       iconUrl:
--         'https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&d=https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/240px-LinkedIn_logo_initials.png',
--       channels: [
--         {
--           id: 'general',
--           name: 'general',
--           description: 'LinkedIn general (professional) chat',
--           teamId: 'li',
--         },
--         {
--           id: 'secrets',
--           name: 'secrets',
--           description: 'professional secrets',
--           teamId: 'li',
--         },
--       ],
--     },
--     {
--       id: 'ms',
--       name: 'Microsoft',
--       order: 3,
--       iconUrl:
--         'https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&d=https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/200px-Microsoft_logo.svg.png',
--       channels: [
--         {
--           id: 'general',
--           name: 'general',
--           description: 'Microsoft general chat',
--           teamId: 'ms',
--         },
--         {
--           id: 'ie8-gripes',
--           name: 'IE8 Gripes',
--           description:
--             'A place for whining about old browsers',
--           teamId: 'ms',
--         },
--       ],
--     },
--   ];
-
-```
-
-Next file to be modified is the `team` route, defined at [`../app/routes/teams/team.js`](../app/routes/teams/team.js).
+Next let’s add real data-fetching to [`app/routes/teams/team.js`](../app/routes/teams/team.js).
 
 Replace the import for the hard coded array, with import for `fetch`.
 
-```diff
--   import { ALL_TEAMS } from '../teams';
-+   import fetch from 'fetch';
+Delete the `ALL_TEAMS` import:
+
+```js
+import { ALL_TEAMS } from '../teams';
 ```
 
-Then, edit the `model()` hook to fetch data for a specific selected team from server.
+And import `fetch` in its place:
 
-```diff
--   model({ teamId }) {
--     const matches = ALL_TEAMS.filter(
--       t => `${t.id}` === `${teamId}`
--     );
--     return matches[0];
-+   async model({ teamId }) {
-+     const resp = await fetch(`/api/teams/${teamId}`);
-+     return resp.json();
+```js
+import fetch from 'fetch';
 ```
 
-Next file to be modified is the `channel` route defined at [`../app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js). This is the last `route` file to be modified as part of this exercise.
+Then, replace the `model` with this:
 
-```diff
-+   import fetch from 'fetch';
+```js
+async model({ teamId }) {
+  const response = await fetch(`/api/teams/${teamId}`);
+  const team = await response.json();
+
+  return team;
+}
 ```
 
-Edit the `model()` hook to fetch data from server.
+Next, let’s add data-fetching to [`app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js).
 
-```diff
--   model({ channelId }) {
--     const team = /** @type {{channels: {id: string}[]}} */ (this.modelFor(
-+   async model({ channelId }) {
-+     const {
-+       teamId,
-+     } = /** @type {{teamId: string}} */ (this.paramsFor(
+Import `fetch`:
+
+```js
+import fetch from 'fetch';
 ```
 
-```diff
--   const matches = team.channels.filter(
--     ch => `${ch.id}` === `${channelId}`
-+   // const team = this.modelFor('teams.team');
-+   const resp = await fetch(
-+     `/api/teams/${teamId}/channels/${channelId}`
+Then replace the `model` hook with this:
+
+```js
+async model({ channelId }) {
+  const { teamId } = this.paramsFor('teams.team');
+  const response = await fetch(`/api/teams/${teamId}/channels/${channelId}`);
+  const channel = await response.json();
+
+  return channel;
+}
 ```
 
-```diff
--   return matches[0];
-+   return resp.json();
-```
+There’s a bit more going on here, so let’s step through it:
+
+1. We receive `channelId` as a param because it’s a dynamic segment in our path (`:channelId`).
+2. We grab the `teamId` param from our parent route by calling `this.paramsFor('teams.team')`.
+3. We fetch the channel data from the API using the two IDs above
+4. We convert the JSON body of the response into data
+5. We return the data for use in the template.
 
 Next, modify the `auth` service defined at [`../app/services/auth.js`](../app/services/auth.js).
 
