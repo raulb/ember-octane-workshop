@@ -134,24 +134,20 @@ In the code shown above, the `model` hook has three steps:
 
 We have now configured our routes to return static data from their respective `model` hooks. Now let's start creating the templates so that we can display that data.
 
-<hr>
-<p>
-  <blockquote>
-    <h3>
-      💡 Mike's Tip: Where do templates live?
-    </h3>
-    <a href="https://github.com/mike-north">
-      <img src="https://github.com/mike-north.png" height=64 align="left" style="margin-right: 10px" />
-    </a>
-    <p>
-      Generally, in Ember apps, templates are either associated with a route or a component. Component templates live in [`app/components`](../app/components) and route templates lives in [`app/templates`](../app/templates).
-    </p>
-    <p>
-      For example, the template for our `<TeamSelector>` component is `app/components/team-selector.hbs`. Whereas, the component for our `teams/team` route is `app/templates/teams/team.hbs` (matching the hierarchy).
-    </p>
-  </blockquote>
-</p>
-<hr>
+<blockquote>
+  <h3>
+    💡 Mike's Tip: Where do templates live?
+  </h3>
+  <a href="https://github.com/mike-north">
+    <img src="https://github.com/mike-north.png" height=64 align="left" style="margin-right: 10px" />
+  </a>
+  <p>
+    Generally, in Ember apps, templates are either associated with a route or a component. Component templates live in <code>app/components</code> and route templates lives in <code>app/templates</code>.
+  </p>
+  <p>
+    For example, the template for our <code>&lt;TeamSelector&gt;</code> component is <code>app/components/team-selector.hbs</code>. Whereas, the component for our <code>teams/team</code> route is <code>app/templates/teams/team.hbs</code> (matching the hierarchy).
+  </p>
+</blockquote>
 
 In this section, we will be creating/editing the following template files:
 
