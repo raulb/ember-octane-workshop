@@ -4,7 +4,7 @@ In this exercise, we will create templates and classes for some new routes. Then
 
 Let's get started!
 
-## Configure Router
+## Configuring the Router
 
 The router file is where information about routes is stored. We are going to add two new child routes — `team` and `channel`. The `channel` route will be a child of `team` route, which in turn will be a child of the `teams` route. We are going to have route hierarchy that will be 3 levels deep.
 
