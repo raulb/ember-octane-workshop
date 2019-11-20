@@ -248,25 +248,27 @@ With this:
 {{/each}}
 ```
 
-Here we’re rendering a link for each channel in `@team.channels` using [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each).
+Here we’re rendering a link for each channel in `@team.channels` using [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each) and `<LinkTo>`.
 
-The final change needed in templates, for this exercise, is the `channel` template defined at [`../app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs).
+Now it’s time to add our final template for this exercise: [`app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs).
 
-Move the template code for displaying channel information, that was removed from the teams route's template and add it to the `channel`'s route template as follows:
+Once you’ve created the file, add the following code:
 
-```diff
-+   <main class="flex-1 flex flex-col bg-white overflow-hidden channel">
-+     <ChannelHeader @title={{this.model.name}} @description={{this.model.description}} />
-+
-+     <div class="py-4 flex-1 overflow-y-scroll channel-messages-list" role="list">
-+       <ChatMessage />
-+       <ChatMessage />
-+       <ChatMessage />
-+     </div>
-+
-+     <ChannelFooter />
-+   </main>
+```hbs
+<main class="flex-1 flex flex-col bg-white overflow-hidden channel">
+  <ChannelHeader @title={{this.model.name}} @description={{this.model.description}} />
+
+  <div class="py-4 flex-1 overflow-y-scroll channel-messages-list" role="list">
+    <ChatMessage />
+    <ChatMessage />
+    <ChatMessage />
+  </div>
+
+  <ChannelFooter />
+</main>
 ```
+
+This is the code we previously removed from `app/templates/teams.hbs`. We have effectively moved it down into our child route.
 
 ## Add Tests
 
