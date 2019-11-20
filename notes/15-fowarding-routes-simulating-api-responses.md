@@ -1,57 +1,62 @@
-# Forwarding Routes & Simulating Api Responses In Tests
+# Redirecting Between Routes & Simulating API Responses
 
-In this exercise, we will be mainly focussing on:
+In this exercise, we will focus on:
 
-- Conditionally forwarding routes
+- Conditionally redirecting to different routes
 - Simulating API responses for tests
-- Adding Tests
+- Adding new tests
 
-And we will be creating/editing the following files:
+## Redirecting Between Routes
 
-- [../app/routes/index.js](../app/routes/index.js)
-- [../app/routes/teams/index.js](../app/routes/teams/index.js)
-- [../app/routes/teams/team/index.js](../app/routes/teams/team/index.js)
-- [../app/templates/teams/index.hbs](../app/templates/teams/index.hbs)
-- [../app/templates/teams/team/index.hbs](../app/templates/teams/team/index.hbs)
-- [../tests/acceptance/forwarding-routes-test.js](../tests/acceptance/forwarding-routes-test.js)
-- [../tests/acceptance/login-test.js](../tests/acceptance/login-test.js)
-- [../tests/acceptance/logout-test.js](../tests/acceptance/logout-test.js)
-- [../tests/unit/routes/index-test.js](../tests/unit/routes/index-test.js)
-- [../tests/unit/routes/teams/index-test.js](../tests/unit/routes/teams/index-test.js)
-- [../tests/unit/routes/teams/team/index-test.js](../tests/unit/routes/teams/team/index-test.js)
+Right now we don’t see anything if we visit the home route (plain old `/`). Let’s make the app redirect us to a more useful route instead.
 
-## Forwarding Routes
+We’re going to put this logic in the `index` route. `index` routes are rendered by default when no explicit leaf route is specified, just like an `index.html` file on a traditional web server.
 
-For forwarding a user to a different route, other than the one that was attempted initially, we will use the [beforeModel](https://www.emberjs.com/api/ember/release/classes/Route/methods/transitionTo?anchor=beforeModel) hook, which is a good place to intercept requests, since it gets executed before the route fetches the data that UI needs.
 
-And for the actual forwarding of a route to a different route, we will use the [transitionTo](https://api.emberjs.com/ember/release/classes/Route/methods/transitionTo?anchor=transitionTo) method, that is available on all routes.
+```
+/                    (application)
+│
+├─ /                 (index)
+│
+└─ teams             (teams)
+   │
+   ├─ /              (team.index)
+   │
+   └─ :teamId        (teams.team)
+      │
+      ├─ /           (team.team.index)
+      │
+      └─ :channelId  (teams.team.channel)
+ 
+```
 
-Based on whether a user is logged in or not, a user trying to visit the main `index` route of the application, should be forwarded accordingly, to different routes. That is, logged in users should get forwarded to `teams` route, and users who are not logged in, should get forwarded to the `login` route.
+Let’s generate our index route:
 
-_Index routes are child routes that will be displayed first by default, when a user visits any route. You can [read more about index routes](https://guides.emberjs.com/release/routing/defining-your-routes/#toc_index-routes) in emberjs from the [emberjs guides website](https://guides.emberjs.com)_.
+```
+$ ember g route index
+```
 
-For implementing this, define the `index` route at [`../app/routes/index.js`](../app/routes/index.js):
+Now replace the contents of `app/routes/index.js` with the following:
 
-```diff
-+   import Route from '@ember/routing/route';
-+   import { inject as service } from '@ember/service';
-+   import AuthService from 'shlack/services/auth';
-+
-+   export default class IndexRoute extends Route {
-+     /**
-+      * @type {AuthService}
-+      */
-+     @service auth;
-+
-+     beforeModel(transition) {
-+       super.beforeModel(transition);
-+       if (this.auth.isAuthenticated) {
-+         this.transitionTo('teams');
-+       } else {
-+         this.transitionTo('login');
-+       }
-+     }
-+   }
+
+```js
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
+import AuthService from 'shlack/services/auth';
+
+export default class IndexRoute extends Route {
+
+  @service auth;
+
+  beforeModel(transition) {
+    if (this.auth.isAuthenticated) {
+      this.transitionTo('teams');
+    } else {
+      this.transitionTo('login');
+    }
+  }
+
+}
 ```
 
 Similarly when a user tries to visit the `index` route under the `teams` or the `team` route, the user should be conditionally forwarded to different routes.
