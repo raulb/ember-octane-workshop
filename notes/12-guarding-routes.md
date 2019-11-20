@@ -1,7 +1,10 @@
 # Guarding Routes
 
 In this exercise, we will be adding redirection in the UI flow based on whether the user is logged in or not.
-Specifically, users should be able to access the `login` route, only when they are _not logged in_. And similarly, users should be able to access the `teams` route only they are _logged in_.
+Specifically, users should be able to access the `login` route, only when they are _not logged in_. And similarly, users should be able to access the `teams` route only they are _logged in_. Clear? Let’s use a diagram just to be sure:
+
+![Login redirection flow chart](./img/12-guarding-routes/flow-chart.png)
+
 
 So let's get started.
 
@@ -55,7 +58,7 @@ import { action } from '@ember/object';
 
 In the login route, present at [`app/routes/login.js`](../app/routes/login.js), add a [`beforeModel`](https://api.emberjs.com/ember/3.9/classes/Route/methods/beforeModel?anchor=beforeModel) hook to check whether the user is authenticated, and either redirect the user or not.
 
-In the login route, import the `auth` service, since its not already available(injected).
+In the login route, import the `auth` service, since its not already available (injected).
 
 ```js
 import { inject as service } from '@ember/service';
@@ -139,7 +142,7 @@ Reasons why acceptance tests are preferred (over unit tests or an integration te
 
 ### Test login
 
-In [`../tests/acceptance/login-test.js`](../tests/acceptance/login-test.js), import the `StubbedAuthService` service:
+In [`tests/acceptance/login-test.js`](../tests/acceptance/login-test.js), import the `StubbedAuthService` service:
 
 ```js
 import StubbedAuthService from '../test-helpers/auth-service';
@@ -185,7 +188,7 @@ test('already logged in', async function(assert) {
 
 ### Test logout
 
-Now let's add acceptance tests to test when users are logged out. The test file is present at [`../tests/acceptance/logout-test.js`](../tests/acceptance/logout-test.js).
+Now let's add acceptance tests to test when users are logged out. The test file is present at [`tests/acceptance/logout-test.js`](../tests/acceptance/logout-test.js).
 
 And as in the previous test, first import the `StubbedAuthService` service:
 
