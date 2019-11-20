@@ -111,30 +111,28 @@ export default class TeamsTeamIndexRoute extends Route {
 }
 ```
 
-## Display Data In Templates
+## Displaying Empty States
 
-Now that we have all the data that we need, let's display them, by creating the needed templates. We will be using index route templates, which are templates that will be displayed first by default, when a user visits a route.
+Now that we have all these `index` templates, let’s display some empty states on them.
 
-For the `teams` route, if there are no teams to be displayed, an appropriate message is displayed in it's corresponding index route, which we will be creating at [`../app/templates/teams/index.hbs`](../app/templates/teams/index.hbs):
+Replace the contents of `app/templates/teams/index.hbs` with the following:
 
-```diff
-+   <div class="mx-auto">
-+     <div class="flex justify-center flex-row w-full leading-loose text-3xl">
-+       No teams in this app
-+     </div>
-+   </div>
--   {{outlet}}
+```hbs
+<div class="mx-auto">
+  <div class="flex justify-center flex-row w-full leading-loose text-3xl">
+    No teams in this app
+  </div>
+</div>
 ```
 
-Similarly, for `channels` route, if there are no channels to be displayed, an appropriate message is displayed in it's corresponding index route, which we will be creating at [`../app/templates/teams/team/index.hbs`](../app/templates/teams/team/index.hbs):
+Let’s do the same for `app/templates/teams/team/index.hbs`:
 
-```diff
-+   <div class="mx-auto">
-+     <div class="flex justify-center flex-row w-full leading-loose text-3xl">
-+       No channels in this team
-+     </div>
-+   </div>
--   {{outlet}}
+```hbs
+<div class="mx-auto">
+  <div class="flex justify-center flex-row w-full leading-loose text-3xl">
+    No channels in this team
+  </div>
+</div>
 ```
 
 ## Tests
