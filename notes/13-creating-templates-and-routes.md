@@ -270,70 +270,59 @@ Once you’ve created the file, add the following code:
 
 This is the code we previously removed from `app/templates/teams.hbs`. We have effectively moved it down into our child route.
 
-## Add Tests
+## Updating Tests
 
-We are done with the implementations for this exercise, with regards to features. But we still need to add tests for testing our features.
+We are done with the implementation for this exercise but we still need to update some of our tests.
 
-In the `logout-test` defined at [`../tests/acceptance/logout-test.js`](../tests/acceptance/logout-test.js) lets modify the tests to reflect the new url associated with the `team` route, that has a [`dynamic segment`](https://guides.emberjs.com/release/routing/defining-your-routes/#toc_dynamic-segments) as part of its url.
+In [`tests/acceptance/logout-test.js`](../tests/acceptance/logout-test.js) let’s modify the existing tests to reflect the new URL associated with the `team` route.
 
-```diff
--   await visit('/teams'); // Go to a URL
-+   await visit('/teams/li'); // Go to a URL
+Replace this:
+
+```js
+await visit('/teams'); // Go to a URL
 ```
 
-```diff
--   assert.equal(currentURL(), '/teams'); // Make sure we've arrived
-+   assert.equal(currentURL(), '/teams/li'); // Make sure we've arrived
+With this:
+
+```js
+await visit('/teams/li'); // Go to a URL
 ```
 
-The `team-sidebar` component is now used with an argument, `@team`. So modify the corresponding test defined at [`tests/integration/components/team-sidebar-test.js`](../tests/integration/components/team-sidebar-test.js).
+And this:
 
-```diff
--   await render(hbs`<TeamSidebar />`);
-+   this.set('myTeam', {
-+     name: 'LinkedIn',
-+     channels: [
-+       {
-+         name: 'general',
-+         id: 'general',
-+       },
-+     ],
-+   });
-+
-+   await render(hbs`<TeamSidebar @team={{this.myTeam}}/>`);
+```js
+assert.equal(currentURL(), '/teams'); // Make sure we've arrived
 ```
 
-Next, add test for the new route, `team`, which is a child route of `teams` route.
+With this:
 
-For `team` (child) route, corresponding test file should be defined at [`tests/unit/routes/teams/team-test.js`](../tests/unit/routes/teams/team-test.js):
-
-```diff
-+   import { module, test } from 'qunit';
-+   import { setupTest } from 'ember-qunit';
-+
-+   module('Unit | Route | teams/team', function(hooks) {
-+     setupTest(hooks);
-+
-+     test('it exists', function(assert) {
-+       let route = this.owner.lookup('route:teams/team');
-+       assert.ok(route);
-+     });
-+   });
+```js
+assert.equal(currentURL(), '/teams/li'); // Make sure we've arrived
 ```
 
-And finally, add a test for another new route that we added, `channel`, which is a child route of `team` route.
-For `channel` (child) route, corresponding test file should be defined at [`tests/unit/routes/teams/team/channel-test.js`](../tests/unit/routes/teams/team/channel-test.js):
+Now let’s turn our attention to the component tests.
 
-```diff
-+   import { module, test } from 'qunit';
-+   import { setupTest } from 'ember-qunit';
-+
-+   module('Unit | Route | teams/team/channel', function(hooks) {
-+     setupTest(hooks);
-+
-+     test('it exists', function(assert) {
-+       let route = this.owner.lookup('route:teams/team/channel');
-+       assert.ok(route);
-+     });
-+   });
+The `<TeamSidebar>` component is now used with an argument, `@team`.
+
+In [`tests/integration/components/team-sidebar-test.js`](../tests/integration/components/team-sidebar-test.js), replace this:
+
+
+```js
+await render(hbs`<TeamSidebar />`);
+```
+
+With this:
+
+```js
+this.set('myTeam', {
+  name: 'LinkedIn',
+  channels: [
+    {
+      name: 'general',
+      id: 'general',
+    },
+  ],
+});
+
+await render(hbs`<TeamSidebar @team={{this.myTeam}}/>`);
 ```
