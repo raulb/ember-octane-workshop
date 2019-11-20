@@ -87,33 +87,28 @@ export default class TeamsIndexRoute extends Route {
 }
 ```
 
-For `channels` route, if there is at least 1 channel associated with the selected team, the first channel is automatically displayed. Else, the index route under the channel route is displayed, with an appropriate message saying that that are no channels associated with the selected team.
+We’re going to use the same trick for `team/index`, but this time redirecting to the first channel in the team. First, generate the route:
 
-Add an `index` child route for `channel` route, at [`../app/routes/teams/team/index.js`](../app/routes/teams/team/index.js):
+```
+$ ember g route teams/team/index
+```
 
-```diff
-+   import Route from '@ember/routing/route';
-+   import { isArray } from '@ember/array';
-+
-+   export default class TeamsTeamIndexRoute extends Route {
-+     beforeModel(transition) {
-+       super.beforeModel(transition);
-+       const {
-+         channels,
-+       } = /** @type {{channels: {id: string}[]}} */ (this.modelFor(
-+         'teams.team'
-+       ));
-+       if (
-+         channels &&
-+         isArray(channels) &&
-+         channels.length > 0
-+       )
-+         this.transitionTo(
-+           'teams.team.channel',
-+           channels[0].id
-+         );
-+     }
-+   }
+Then replace the contents
+
+```js
+import Route from '@ember/routing/route';
+
+export default class TeamsTeamIndexRoute extends Route {
+
+  beforeModel() {
+    const { channels: [channel] } = this.modelFor('teams.team');
+
+    if (channel) {
+      this.transitionTo('teams.team.channel', channel.id);
+    }
+  }
+
+}
 ```
 
 ## Display Data In Templates
