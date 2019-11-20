@@ -326,3 +326,7 @@ this.set('myTeam', {
 
 await render(hbs`<TeamSidebar @team={{this.myTeam}}/>`);
 ```
+
+## 🙌
+
+Nice work — we have successfully restructured our app with dynamic URLs and nested routes.
