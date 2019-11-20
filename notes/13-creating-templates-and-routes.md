@@ -157,63 +157,42 @@ In this section, we will be creating/editing the following template files:
 - [`app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs)
 - [`app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs)
 
-First, refactor the [`teams`](../app/templates/teams.hbs) template by replacing the existing content with `TeamSelector` component, that gets passed the `teams` data into it, to be displayed in its own template.
+First, refactor [`app/templates/teams.hbs`](../app/templates/teams.hbs) by replacing the existing content with a `TeamSelector` component. We will pass the `teams` data from the route’s model hook directly into `TeamSelector`.
 
-```diff
--   <TeamSelector />
--   <TeamSidebar />
--   <main class="flex-1 flex flex-col bg-white overflow-hidden channel">
--     <ChannelHeader @title="compliments" @description="Say nice things about your teammates" />
--
--     <div class="py-4 flex-1 overflow-y-scroll channel-messages-list" role="list">
--       <ChatMessage />
--       <ChatMessage />
--       <ChatMessage />
--     </div>
--
--     <ChannelFooter />
--   </main>
--   {{outlet}}
-+   <TeamSelector @teams={{this.model}} />
-+   {{outlet}}
+
+Replace everything in the file with this:
+
+```hbs
+<TeamSelector @teams={{this.model}} />
+
+{{outlet}}
 ```
 
-Inside the `team-selector` component's template defined at [`../app/components/team-selector.hbs`](../app/components/team-selector.hbs), replace the existing content with code to iterate over the `teams` array that got passed into it, from the calling location (i.e. the `teams` template).
+Inside [`app/components/team-selector.hbs`](../app/components/team-selector.hbs), we are going to replace the existing content with code to iterate over the `@teams` array that we just passed in.
 
-The array iteration is done using handlebar's [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each) helper. For a full list of built-in Helpers, see the [`Ember.Templates.helpers`](https://api.emberjs.com/ember/release/classes/Ember.Templates.helpers/) API documentation.
+The array iteration is done using Handlebars’ [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each) helper. For a full list of built-in Helpers, see the [`Ember.Templates.helpers`](https://api.emberjs.com/ember/release/classes/Ember.Templates.helpers/) API documentation.
 
-```diff
--   <nav
--     class="team-selector bg-indigo-darkest border-indigo-darkest border-r-2 pt-2 text-purple-lighter flex-none hidden sm:block">
--     <a href="/li" data-team-id="li"
--       class="team-selector__team-button cursor-pointer rounded-lg p-2 pl-4 block no-underline opacity-25 opacity-100">
--       <div
--         class="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
--         <img class="team-selector__team-logo"
--           src="https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&amp;d=https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/240px-LinkedIn_logo_initials.png"
--           alt="LinkedIn">
--       </div>
--     </a>
--     <a href="/ms" data-team-id="ms"
--       class="team-selector__team-button cursor-pointer rounded-lg p-2 pl-4 block no-underline opacity-25">
--       <div class="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
--         <img class="team-selector__team-logo"
--           src="https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&amp;d=https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/200px-Microsoft_logo.svg.png"
--           alt="Microsoft">
--       </div>
--     </a>
-+<nav class="team-selector bg-indigo-darkest border-indigo-darkest border-r-2 pt-2 text-purple-lighter flex-none hidden sm:block">
-+  {{#each @teams as |team|}}
-+    <LinkTo @route="teams.team" @model={{team.id}} data-team-id={{team.id}} class="team-selector__team-button cursor-pointer rounded-lg p-2 pl-4 block no-underline opacity-25 opacity-100">
-+      <div
-+        class="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
-+        <img
-+          class="team-selector__team-logo"
-+          src={{team.iconUrl}}
-+          alt={{team.name}}>
-+      </div>
-+    </LinkTo>
-+  {{/each}}
+Replace the contents of [`app/components/team-selector.hbs`](../app/components/team-selector.hbs) with this:
+
+```hbs
+<nav class="team-selector bg-indigo-darkest border-indigo-darkest border-r-2 pt-2 text-purple-lighter flex-none hidden sm:block">
+  {{#each @teams as |team|}}
+    <LinkTo
+      @route="teams.team"
+      @model={{team.id}}
+      data-team-id={{team.id}}
+      class="team-selector__team-button cursor-pointer rounded-lg p-2 pl-4 block no-underline opacity-25 opacity-100"
+    >
+      <div class="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
+        <img
+          class="team-selector__team-logo"
+          src={{team.iconUrl}}
+          alt={{team.name}}
+        >
+      </div>
+    </LinkTo>
+  {{/each}}
+</nav>
 ```
 
 Create a new template file(.hbs) corresponding to the child route `team` at `app/templates/teams/team.hbs`. And, in this `team` template, lets use the `team-sidebar` component(angle bracket component) that we already have, and pass the model data into it. Here the `this.model` is the data that was returned from the `model()` hook in the corresponding route, that is, the [`team.js`](../app/routes/teams/team.js) route.
