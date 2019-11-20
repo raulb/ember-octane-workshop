@@ -26,13 +26,9 @@ this.route('teams', function() {
 });
 ```
 
+In the code above we specified “dynamic segments” for our paths: `:teamId` and `:channelId`. These dynamic parts of the URL will be passed to our `model` hook as `params`. We’ll see examples of this shortly.
+
 ## Enhancing Routes
-
-In this section, we will be creating/editing the following route files:
-
-- [`app/routes/teams.js`](../app/routes/teams.js)
-- [`app/routes/teams/team.js`](../app/routes/teams/team.js)
-- [`app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js)
 
 In the [`teams`](../app/routes/teams.js) route, we will use the [`model`](https://api.emberjs.com/ember/3.9/classes/Route/methods/model?anchor=model) hook to return some static data to be displayed in the template. In this case, we will return an array of javascript objects. Let’s start by defining that array.
 
@@ -148,14 +144,6 @@ We have now configured our routes to return static data from their respective `m
     For example, the template for our <code>&lt;TeamSelector&gt;</code> component is <code>app/components/team-selector.hbs</code>. Whereas, the component for our <code>teams/team</code> route is <code>app/templates/teams/team.hbs</code> (matching the hierarchy).
   </p>
 </blockquote>
-
-In this section, we will be creating/editing the following template files:
-
-- [`app/templates/teams.hbs`](../app/templates/teams.hbs)
-- [`app/components/team-selector.hbs`](../app/components/team-selector.hbs)
-- [`app/templates/teams/team.hbs`](../app/templates/teams/team.hbs)
-- [`app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs)
-- [`app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs)
 
 First, refactor [`app/templates/teams.hbs`](../app/templates/teams.hbs) by replacing the existing content with a `<TeamSelector>` component. We will pass the `teams` data from the route’s model hook directly into `<TeamSelector>`.
 
