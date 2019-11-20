@@ -1,150 +1,165 @@
 # Creating Templates and Routes
 
-In this exercise, we will be creating templates(handlebars) and routes for the same.
-Then, we will configure the router file for the newly created routes. The routes, as we saw in earlier exercises, provides the data that templates display. Finally, we will wrap up this exercise, by adding some tests.
+In this exercise, we will create templates and classes for some new routes. Then, we will add our new routes to the `router.js` file. The route classes, as we saw in earlier exercises, will provide the data that the templates will display. Finally, we will wrap up this exercise by adding some tests.
 
 Let's get started!
 
 ## Configure Router
 
-The router file is where information about routes is stored. We are going to add two new child routes - `team` and `channel`. The `channel` route will be a child of `team` route, which in turn will be a child of `teams` route. We are going to have route hierarchy that will be 3 levels deep.
+The router file is where information about routes is stored. We are going to add two new child routes — `team` and `channel`. The `channel` route will be a child of `team` route, which in turn will be a child of the `teams` route. We are going to have route hierarchy that will be 3 levels deep.
 
 Configure the routes by modifying the [`router`](../app/router.js) file as follows:
 
-```diff
--   this.route('teams');
-+   this.route('teams', function() {
-+     this.route('team', {
-+       path: ':teamId'
-+     }, function() {
-+       this.route('channel', {
-+         path: ':channelId'
-+       });
-+     });
-+   });
+Replace this:
+
+```js
+this.route('teams');
+```
+
+With this:
+
+```js
+this.route('teams', function() {
+  this.route('team', { path: ':teamId' }, function() {
+    this.route('channel', { path: ':channelId' });
+  });
+});
 ```
 
 ## Enhancing Routes
 
 In this section, we will be creating/editing the following route files:
 
-- [`../app/routes/teams.js`](../app/routes/teams.js)
-- [`../app/routes/teams/team.js`](../app/routes/teams/team.js)
-- [`../app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js)
+- [`app/routes/teams.js`](../app/routes/teams.js)
+- [`app/routes/teams/team.js`](../app/routes/teams/team.js)
+- [`app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js)
 
-In the [`teams`](../app/routes/teams.js) route, use the [`model`](https://api.emberjs.com/ember/3.9/classes/Route/methods/model?anchor=model) hook to return some hard coded static data, that can be displayed in the template. In this case, we will be returning an array of javascript objects. So, start with defining an array of objects.
+In the [`teams`](../app/routes/teams.js) route, we will use the [`model`](https://api.emberjs.com/ember/3.9/classes/Route/methods/model?anchor=model) hook to return some static data to be displayed in the template. In this case, we will return an array of javascript objects. Let’s start by defining that array.
 
-Modify the [`teams`](../app/routes/teams.js) route as follows.
+Add the following to [`app/routes/teams.js`](../app/routes/teams.js), just after the `import` statements at the top of the file.
 
-```diff
-+   export const ALL_TEAMS = [
-+     {
-+       id: 'li',
-+       name: 'LinkedIn',
-+       order: 2,
-+       iconUrl:
-+         'https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&d=https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/240px-LinkedIn_logo_initials.png',
-+       channels: [
-+         {
-+           id: 'general',
-+           name: 'general',
-+           description: 'LinkedIn general (professional) chat',
-+           teamId: 'li',
-+         },
-+         {
-+           id: 'secrets',
-+           name: 'secrets',
-+           description: 'professional secrets',
-+           teamId: 'li',
-+         },
-+       ],
-+     },
-+     {
-+       id: 'ms',
-+       name: 'Microsoft',
-+       order: 3,
-+       iconUrl:
-+         'https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&d=https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/200px-Microsoft_logo.svg.png',
-+       channels: [
-+         {
-+           id: 'general',
-+           name: 'general',
-+           description: 'Microsoft general chat',
-+           teamId: 'ms',
-+         },
-+         {
-+           id: 'ie8-gripes',
-+           name: 'IE8 Gripes',
-+           description:
-+             'A place for whining about old browsers',
-+           teamId: 'ms',
-+         },
-+       ],
-+     },
-+   ];
+```js
+export const ALL_TEAMS = [
+  {
+    id: 'li',
+    name: 'LinkedIn',
+    order: 2,
+    iconUrl:
+      'https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&d=https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/240px-LinkedIn_logo_initials.png',
+    channels: [
+      {
+        id: 'general',
+        name: 'general',
+        description: 'LinkedIn general (professional) chat',
+        teamId: 'li',
+      },
+      {
+        id: 'secrets',
+        name: 'secrets',
+        description: 'professional secrets',
+        teamId: 'li',
+      },
+    ],
+  },
+  {
+    id: 'ms',
+    name: 'Microsoft',
+    order: 3,
+    iconUrl:
+      'https://gravatar.com/avatar/0ca1be2eaded508606982feb9fea8a2b?s=200&d=https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/200px-Microsoft_logo.svg.png',
+    channels: [
+      {
+        id: 'general',
+        name: 'general',
+        description: 'Microsoft general chat',
+        teamId: 'ms',
+      },
+      {
+        id: 'ie8-gripes',
+        name: 'IE8 Gripes',
+        description:
+          'A place for whining about old browsers',
+        teamId: 'ms',
+      },
+    ],
+  },
+];
 ```
 
-Then, return the hard coded static array defined above, from the `model` hook of the [`teams`](../app/routes/teams.js) route, by adding the following lines:
+Then add a `model` hook to the body of the class. This method returns the `ALL_TEAMS` data we just defined:
 
-```diff
-+   model() {
-+     return ALL_TEAMS;
-+   }
+```js
+model() {
+  return ALL_TEAMS;
+}
 ```
 
-Now, lets move on to defining the [`team`](../app/routes/teams/team.js) route. Create a new `.js` file for `team` route at [`../app/routes/teams/team.js`](../app/routes/teams/team.js) and add the following to it.
+Now lets move on to defining the [`team`](../app/routes/teams/team.js) route. Create [`app/routes/teams/team.js`](../app/routes/teams/team.js) and add the following code to it:
 
-```diff
-+   import Route from '@ember/routing/route';
-+   import { ALL_TEAMS } from '../teams';
-+
-+   export default class TeamsTeamRoute extends Route {
-+     model({ teamId }) {
-+       const matches = ALL_TEAMS.filter(
-+         t => `${t.id}` === `${teamId}`
-+       );
-+       return matches[0];
-+     }
-+   }
+```js
+import Route from '@ember/routing/route';
+import { ALL_TEAMS } from '../teams';
+
+export default class TeamsTeamRoute extends Route {
+  model({ teamId }) {
+    return ALL_TEAMS.find(team => team.id === teamId);
+  }
+}
 ```
 
-In the code shown above, the `model` hook will return an object from the array of objects that we defined earlier in the [`teams`](../app/routes/teams.js) route. The object that will be returned will be the one whose `id` property matches the `teamId` specified in the url for this `team` route.
+In the code shown above, the `model` hook returns an object from the `ALL_TEAMS` array that we defined earlier in [`app/routes/teams.js`](../app/routes/teams.js). The object it returns will be the one whose `id` matches the `teamId` specified in the URL for this `team` route.
 
-Similar to how we created the `team` route, create a new `.js` file for `channel` route at [`../app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js) and add the following code to it.
+Similar to how we created the `team` route, create a new `.js` file for `channel` route at [`app/routes/teams/team/channel.js`](../app/routes/teams/team/channel.js) and add the following code to it:
 
-```diff
-+   import Route from '@ember/routing/route';
-+
-+   export default class TeamsTeamChannelRoute extends Route {
-+     model({ channelId }) {
-+       const team = /** @type {{channels: {id: string}[]}} */ (this.modelFor(
-+         'teams.team'
-+       ));
-+       const matches = team.channels.filter(
-+         ch => `${ch.id}` === `${channelId}`
-+       );
-+       return matches[0];
-+     }
-+   }
+```js
+import Route from '@ember/routing/route';
+
+export default class TeamsTeamChannelRoute extends Route {
+  model({ channelId }) {
+    const team = this.modelFor('teams.team');
+    const channel = team.channels.find(chan => chan.id === channelId);
+
+    return channel;
+  }
+}
 ```
 
-In the code shown above, the `model` hook does something similar to what the `model` hook in `team` route did; that is, it will return an object from the array of objects that we defined earlier in the [`teams`](../app/routes/teams.js) route. The object that will be returned will be the one whose `id` property matches the `channelId` specified in the url for this `channel` route.
+In the code shown above, the `model` hook has three steps:
+
+1. It gets the current `team` object from its parent route (`teams.team`).
+2. It searches `team.channels` for a channel whose `id` matches the `channelId` in the URL.
+3. It returns the matching channel.
 
 ## Displaying Static Data in templates
 
-We have now configured routes to return hard coded static data from their respective `model` hooks. Now let's start creating the templates, so that we can display the data returned from the routes.
+We have now configured our routes to return static data from their respective `model` hooks. Now let's start creating the templates so that we can display that data.
 
-Generally, in an ember application, templates are associated with a route or a component. And this decides their exact location inside the `app/templates` directory.
-
-For example, template files like [`team.hbs`](../app/templates/teams/team.hbs) which is present directly under the [`../app/templates`](../app/templates/) directory are templates associated with routes. And template files like [`team-sidebar.hbs`](../app/components/team-sidebar.hbs) which is present under the [`../app/components`](../app/components) directory are templates associated with components.
+<hr>
+<p>
+  <blockquote>
+    <h3>
+      💡 Mike's Tip: Where do templates live?
+    </h3>
+    <a href="https://github.com/mike-north">
+      <img src="https://github.com/mike-north.png" height=64 align="left" style="margin-right: 10px" />
+    </a>
+    <p>
+      Generally, in Ember apps, templates are either associated with a route or a component. Component templates live in [`app/components`](../app/components) and route templates lives in [`app/templates`](../app/templates).
+    </p>
+    <p>
+      For example, the template for our `<TeamSelector>` component is `app/components/team-selector.hbs`. Whereas, the component for our `teams/team` route is `app/templates/teams/team.hbs` (matching the hierarchy).
+    </p>
+  </blockquote>
+</p>
+<hr>
 
 In this section, we will be creating/editing the following template files:
 
-- [`../app/templates/teams.hbs`](../app/templates/teams.hbs)
-- [`../app/components/team-selector.hbs`](../app/components/team-selector.hbs)
-- [`../app/templates/teams/team.hbs`](../app/templates/teams/team.hbs)
-- [`../app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs)
-- [`../app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs)
+- [`app/templates/teams.hbs`](../app/templates/teams.hbs)
+- [`app/components/team-selector.hbs`](../app/components/team-selector.hbs)
+- [`app/templates/teams/team.hbs`](../app/templates/teams/team.hbs)
+- [`app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs)
+- [`app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs)
 
 First, refactor the [`teams`](../app/templates/teams.hbs) template by replacing the existing content with `TeamSelector` component, that gets passed the `teams` data into it, to be displayed in its own template.
 
