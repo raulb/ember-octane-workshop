@@ -327,6 +327,8 @@ this.set('myTeam', {
 await render(hbs`<TeamSidebar @team={{this.myTeam}} />`);
 ```
 
+Now we can visit [`http://localhost:4200/tests?nolint`](http://localhost:4200/tests?nolint) and we should see everything passing.
+
 ## 🙌
 
 Nice work — we have successfully restructured our app with dynamic URLs and nested routes.
