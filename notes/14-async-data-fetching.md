@@ -115,142 +115,112 @@ There’s a bit more going on here, so let’s step through it:
 
 1. We receive `channelId` as a param because it’s a dynamic segment in our path (`:channelId`).
 2. We grab the `teamId` param from our parent route by calling `this.paramsFor('teams.team')`.
-3. We fetch the channel data from the API using the two IDs above
-4. We convert the JSON body of the response into data
+3. We fetch the channel data from the API using the two IDs above.
+4. We convert the JSON body of the response into data.
 5. We return the data for use in the template.
 
-Next, modify the `auth` service defined at [`../app/services/auth.js`](../app/services/auth.js).
+Now that we’ve added all real data-fetching logic to our routes, we’ll turn out attention to the auth service.
+Let’s open [`app/services/auth.js`](../app/services/auth.js) and make the following modifications.
 
-Add the required imports for using [`tracked`](https://glimmerjs.com/guides/tracked-properties) properties and `fetch` method:
+Add the required imports for using [`tracked`](https://glimmerjs.com/guides/tracked-properties) and `fetch`:
 
-```diff
-+   import { tracked } from '@glimmer/tracking';
-+   import fetch from 'fetch';
+```js
+import { tracked } from '@glimmer/tracking';
+import fetch from 'fetch';
 ```
 
 Then define a `tracked` property, `currentUser`:
 
-```diff
-+   @tracked currentUser = null;
+```js
+@tracked currentUser = null;
 ```
 
-Modify the `loginWithUserId` method as an `async` method, since it is going to be called with `await` keyword.
+Now add the `loadCurrentUser` method that we referred to in the `teams` route.
 
-```diff
--   loginWithUserId(userId) {
-+   async loginWithUserId(userId) {
-```
+```js
+async loadCurrentUser() {
+  if (!this.currentUserId) {
+    return;
+  }
 
-Add the definition for `loadCurrentUser` method that we used earlier in the exercise, in the `teams` route, defined at [`../app/routes/teams.js`](../app/routes/teams.js).
+  const response = await fetch(`/api/users/${this.currentUserId}`);
+  const user = await response.json();
 
-```diff
-+   async loadCurrentUser() {
-+     const { currentUserId } = this;
-+     if (!currentUserId) return;
-+     this.currentUser = await (await fetch(
-+       `/api/users/${currentUserId}`
-+     )).json();
-+   }
+  this.currentUser = user;
+}
 ```
 
 ## Display fetched data
 
-We are now done with all the data fetching needed for this exercise. Now its time to display them in our templates.
+We are now done with all the data fetching needed for this exercise. Now it’s time to display them in our templates.
 
-In the [`login`](../app/templates/login.hbs) template, pass the model data into the `login-form` component. Note here that the login-form component used here, is following angle bracket syntax.
+In [`app/templates/login.hbs`](../app/templates/login.hbs), pass the model data into the `<LoginForm />` component:
 
-```diff
--   <LoginForm />
-+   <LoginForm @users={{this.model}}/>
+```hbs
+<LoginForm @users={{this.model}} />
 ```
 
-In the [`login-form`](`../app/components/login-form.hbs`) component template, replace the hard coded values in the user selection dropdown to dynamic values fetched from server. Here `@users` contains the dynamic data that was feed into it from the `login.hbs` template.
+In [`app/components/login-form.hbs`](`../app/components/login-form.hbs`), replace the latter two hard-coded `<option>` elements with dynamic ones:
 
-```diff
--   <option selected={{eq this.userId "1"}} value="1">Testy Testerson</option>
--   <option selected={{eq this.userId "2"}} value="2">Sample McData</option>
-+   {{#each @users as |user|}}
-+     <option selected={{eq this.userId (concat '' user.id)}} value={{user.id}}>{{user.name}}</option>
-+   {{/each}}
+```hbs
+{{#each @users as |user|}}
+  <option
+    selected={{eq this.userId (concat '' user.id)}}
+    value={{user.id}}
+  >
+    {{user.name}}
+  </option>
+{{/each}}
 ```
 
-## Test helper
+Let’s unpack what’s going on here:
 
-In the `auth` service defined at [`../app/services/auth.js`](../app/services/auth.js), we added some new methods. Lets update the test helper present at [`../tests/test-helpers/auth-service.js`](../tests/test-helpers/auth-service.js) accordingly. This test helper makes sure every time tests are run, there is no state leakage across tests, and application state stored on the auth service is reset, before each test is run.
-
-Add the import for `action` at the top of the file, in the imports section.
-
-```diff
-+   import { action } from '@ember/object';
-```
-
-Add definition for `loginWithUserId` method:
-
-```diff
-+   async loginWithUserId(id) {
-+     this.currentUserId = id;
-+     await this.loadCurrentUser();
-+     this.router.transitionTo('teams');
-+   }
-```
-
-Note that in the above updated method definition for `loginWithUserId`, we added a call to the new method, `loadCurrentUser()`. So lets add the definition for `loadCurrentUser` method accordingly.
-
-```diff
-+   async loadCurrentUser() {
-+     if (!this.isAuthenticated) return;
-+     this.currentUser = {
-+       id: this.currentUserId,
-+       name: 'Mike North',
-+     };
-+   }
-```
-
-```diff
-+   @action
-+   logout() {
-+     this.currentUserId = null;
-+     this.currentUser = null;
-+     this.router.transitionTo('login');
-+   }
-```
+1. We render an `<option>` for each `user` in the `@users` array.
+2. If the `id` of a user matches `this.userId` then we mark it as selected.
+3. We use a little trick (`(concat '' user.id)`) to convert `user.id` to a string.
+4. We do this to ensure the comparision to `this.userId` works correctly.
+5. `(concat '' user.id)` is equivalent to `'' + user.id` in JavaScript.
 
 ## Tests
 
-Update the tests for the [`login-form`](../tests/integration/components/login-form-test.js) component to reflect the changes we made earlier in this exercise, to replace all occurrences of hard coded data with data fetched from server.
+We’ve added a new method to the auth service, so we need to add a corresponding method to StubbedAuthService.
 
-```diff
--   await render(hbs`<LoginForm />`);
-+   this.set('myUsers', [
-+     { id: 1, name: 'Sample McFixture' },
-+     { id: 2, name: 'Testy Assertington' },
-+   ]);
-+
-+   await render(hbs`<LoginForm @users={{this.myUsers}}/>`);
+In [`tests/test-helpers/auth-service.js`](../tests/test-helpers/auth-service.js) add a stub definition for `loadCurrentUser`:
+
+```js
+loadCurrentUser() {
+  if (!this.isAuthenticated) {
+    return;
+  }
+
+  this.currentUser = {
+    id: this.currentUserId,
+    name: 'Mike North',
+  };
+}
 ```
 
-```diff
--   ['Login', 'Select a user', 'Testy Testerson', 'Sample McData']
-+   ['Login', 'Select a user', 'Sample McFixture', 'Testy Assertington']
+We also need to update the tests for `<LoginForm>`.
+
+Update [`tests/integration/components/login-form-test.js`](../tests/integration/components/login-form-test.js), replacing all instances of this:
+
+```hbs
+await render(hbs`<LoginForm />`);
 ```
 
-```diff
-+   this.set('myUsers', [
-+     { id: 1, name: 'Sample McFixture' },
-+     { id: 2, name: 'Testy Assertington' },
-+   ]);
+With this:
+
+```js
+this.set('myUsers', [
+  { id: 1, name: 'Sample McFixture' },
+  { id: 2, name: 'Testy Assertington' },
+]);
+
+await render(hbs`<LoginForm @users={{this.myUsers}}/>`);
 ```
 
-```diff
--   await render(hbs`<LoginForm />`);
-+   await render(hbs`<LoginForm @users={{this.myUsers}}/>`);
-```
+Finally, update the assertions to expect the new data. That is, replace `'Testy Testerson'` and `'Sample McData'` with `'Sample McFixture'` and `'Testy Assertington'`.
 
-```diff
--   'Testy Testerson',
--   'Sample McData',
-+   'Sample McFixture',
-+   'Testy Assertington',
-```
+## 🙌
 
-And that's it. You are now done with this exercise!
+Awesome — we’ve introduced real data fetching to our app!
