@@ -157,7 +157,7 @@ In this section, we will be creating/editing the following template files:
 - [`app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs)
 - [`app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs)
 
-First, refactor [`app/templates/teams.hbs`](../app/templates/teams.hbs) by replacing the existing content with a `TeamSelector` component. We will pass the `teams` data from the route’s model hook directly into `TeamSelector`.
+First, refactor [`app/templates/teams.hbs`](../app/templates/teams.hbs) by replacing the existing content with a `<TeamSelector>` component. We will pass the `teams` data from the route’s model hook directly into `<TeamSelector>`.
 
 
 Replace everything in the file with this:
@@ -195,44 +195,60 @@ Replace the contents of [`app/components/team-selector.hbs`](../app/components/t
 </nav>
 ```
 
-Create a new template file(.hbs) corresponding to the child route `team` at `app/templates/teams/team.hbs`. And, in this `team` template, lets use the `team-sidebar` component(angle bracket component) that we already have, and pass the model data into it. Here the `this.model` is the data that was returned from the `model()` hook in the corresponding route, that is, the [`team.js`](../app/routes/teams/team.js) route.
+Create a new template for the `team` route at `app/templates/teams/team.hbs` and add the following code:
 
-(By default, `this.model` property is set automatically by [`setupController`](https://api.emberjs.com/ember/3.10/classes/Route/methods/setupController?anchor=setupController) - one of the other life cycle hooks available in the route)
+```hbs
+<TeamSidebar @team={{this.model}} />
 
-```diff
-+   <TeamSidebar @team={{this.model}}/>
-+   {{outlet}}
+{{outlet}}
 ```
 
-Now change the implementation for `team-sidebar` component's template defined at [`../app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs) to dynamically display the team name.
+In the code above, we’re using the `<TeamSidebar>` component that we already built, and passing the data from our `model` hook into it.
 
-Here `@team` refers to the attribute that was passed in to this team-sidebar component's template.
+Now we’ll change our `<TeamSidebar>` component to dynamically display the team name.
 
-```diff
--   LinkedIn
-+   {{@team.name}}
+In [`app/components/team-sidebar.hbs`](../app/components/team-sidebar.hbs), replace this static section:
+
+```hbs
+LinkedIn
 ```
 
-And iterate the `channels` array that was passed in as part of the @team attribute using the [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each) helper.
+With this:
 
-```diff
--   <a href="/li/general" data-channel-id="general"
--     class="team-sidebar__channel-link py-1 px-4 text-white no-underline block opacity-75 bg-teal-dark">
--     <span aria-hidden="true">#</span>
--     general
--   </a>
-+   {{#each @team.channels as |channel|}}
-+     <LinkTo
-+       @route="teams.team.channel"
-+       @model={{channel.id}}
-+       @activeClass="bg-teal-dark"
-+       data-channel-id={{channel.id}}
-+       class="team-sidebar__channel-link py-1 px-4 text-white no-underline block opacity-75">
-+       <span aria-hidden="true">#</span>
-+       {{channel.name}}
-+     </LinkTo>
-+   {{/each}}
 ```
+{{@team.name}}
+```
+
+(`@team` is the argument we passed in.)
+
+Then replace this static link:
+
+```hbs
+<a href="/li/general" data-channel-id="general"
+  class="team-sidebar__channel-link py-1 px-4 text-white no-underline block opacity-75 bg-teal-dark">
+  <span aria-hidden="true">#</span>
+  general
+</a>
+```
+
+With this:
+
+```hbs
+{{#each @team.channels as |channel|}}
+  <LinkTo
+    @route="teams.team.channel"
+    @model={{channel.id}}
+    @activeClass="bg-teal-dark"
+    data-channel-id={{channel.id}}
+    class="team-sidebar__channel-link py-1 px-4 text-white no-underline block opacity-75"
+  >
+    <span aria-hidden="true">#</span>
+    {{channel.name}}
+  </LinkTo>
+{{/each}}
+```
+
+Here we’re rendering a link for each channel in `@team.channels` using [`each`](https://api.emberjs.com/ember/3.9/classes/Ember.Templates.helpers/methods/each?anchor=each).
 
 The final change needed in templates, for this exercise, is the `channel` template defined at [`../app/templates/teams/team/channel.hbs`](../app/templates/teams/team/channel.hbs).
 
