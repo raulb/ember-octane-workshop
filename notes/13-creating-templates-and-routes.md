@@ -324,7 +324,7 @@ this.set('myTeam', {
   ],
 });
 
-await render(hbs`<TeamSidebar @team={{this.myTeam}}/>`);
+await render(hbs`<TeamSidebar @team={{this.myTeam}} />`);
 ```
 
 ## 🙌
