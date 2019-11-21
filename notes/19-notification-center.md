@@ -168,7 +168,7 @@ if (!resp.ok) {
 And finally add a success notification if we made it all the way to the end of `deleteMessage`:
 
 ```js
-this.notifications.notify('Problem deleting message', 'red');
+this.notifications.notify('Deleted message');
 ```
 
 Then update `createMessage` in a similar manner:
