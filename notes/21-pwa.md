@@ -1,14 +1,13 @@
 # Progressive Web App
 
-PWA technologies allow us to push web apps even closer to a native-like experience. The most powerful (and challenging to implement) part
-of this group of APIs is a _Service Worker_
+PWA technologies allow us to push web apps even closer to a native-like experience. The most powerful (and challenging to implement) part of this group of APIs is a _Service Worker_.
 
-Service workers are a topic in and of themselves, and if you want to learn more about them
+Service workers are a topic in and of themselves, and if you want to learn more about them:
 
-- see my PWA course
-- kyle simpson has a workshop too (https://frontendmasters.com/workshops/service-worker-pwa/)
+- See [Mike North’s PWA course](https://frontendmasters.com/courses/progressive-web-apps/)
+- Or [Kyle Simpson’s Service Worker Course](https://frontendmasters.com/workshops/service-worker-pwa/)
 
-Thankfully, Ember's opinionated ecosystem allows us to share a common package for this
+Thankfully, Ember's opinionated ecosystem allows us to share a common packages for this:
 
 ```sh
 ember install \
@@ -18,7 +17,7 @@ ember install \
   ember-service-worker-index # special handling of index.html
 ```
 
-There's _almost_ no configuration required. The one thing we have to do is inform the fallback cache of the URLs we want it to "save" data for as they pass through. This way if we lose connectivity, we'll fall back to the cached payloads.
+There's _almost_ no configuration required. The one thing we have to do is inform the fallback cache of the URLs we want it to "save" data for. This way if we lose connectivity, we'll fall back to the cached payloads.
 
 Open [`ember-cli-build.js`](../ember-cli-build.js) and make this change.
 
@@ -60,3 +59,9 @@ Now, to test out our ability to go offline,
 The app will load! You can even turn off your wifi and the app will still work!
 
 Note that as soon as you try to see anything you haven't previously seen (i.e., a channel you haven't clicked on), you'll get an error. You're caching API payloads _as they fly by_. Deliberately caching particular URLs is a very easy change to make, but beyond the scope of this course.
+
+## 🙌
+
+We made it! Thank you so much for taking part in this workshop. We hope you’ve learned some useful concepts and are excited to try out some of what you’ve learned on a real app.
+
+Ember Octane will be *officially* released in Ember 3.15 (out next month) but all of these features are available in Ember today.
