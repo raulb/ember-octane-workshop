@@ -152,8 +152,9 @@ We can hook this up with a few changes to [`app/components/channel-footer.hbs`](
     >
 
 -   <button disabled
-+   <button disabled={{this.isDisabled}}
 -     class="channel-footer__message-send-button font-bold uppercase opacity-50 bg-grey-dark text-white border-teal-dark p-2">
++   <button
++     disabled={{this.isDisabled}}
 +     class="
 +       channel-footer__message-send-button font-bold uppercase text-white border-teal-dark p-2
 +       {{if this.isDisabled "bg-grey-dark opacity-50" "bg-teal-dark"}}
