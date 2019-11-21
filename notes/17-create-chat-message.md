@@ -52,9 +52,8 @@ Next, let's enhance our channel container by implementing a `createMessage` acti
 
     // If the response was *not OK* then throw an error
     if (!resp.ok) {
-      throw new Error(
-        'Problem creating message: ' + (await resp.text())
-      );
++     const reason = await resp.text();
+      throw new Error(`Problem creating message: ${reason}`);
     }
 
     // Grab the message data from the response
