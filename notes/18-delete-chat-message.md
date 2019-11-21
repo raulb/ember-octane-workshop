@@ -79,7 +79,7 @@ Is equivalent to this in JavaScript:
 chatMessage.onDelete = function() { return ch.actions.deleteMessage(message) }
 ```
 
-This is sometimes called “binding” or “currying”, and it’s so useful that Ember has `{{fn}}` built-in for just this purpose.
+This is sometimes called “binding” or “currying”. It’s so useful that Ember has `{{fn}}` built-in for just this purpose.
 
 Finally, let's go into [`app/components/chat-message.hbs`](../app/components/chat-message.hbs) and hook the action up to the existing button:
 
