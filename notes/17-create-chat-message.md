@@ -77,16 +77,16 @@ Next, let's enhance our channel container by implementing a `createMessage` acti
 In this component's template, let's create a new `actions` object that's yielded out, and pass our new action along as a property. Consumers can then do something like `channel.actions.createMessage` to access this function. Make the following change to [`app/components/channel-container.hbs`](../app/components/channel-container.hbs)
 
 ```diff
-<main class="flex-1 flex flex-col bg-white overflow-hidden channel"
-  {{did-insert this.loadMessages}}
-  {{did-update this.loadMessages @channel}}
->
-  {{yield (hash
-    messages=this.messages
-+   actions=(hash
-+     createMessage=this.createMessage
-+   )
-  )}}
+  <main class="flex-1 flex flex-col bg-white overflow-hidden channel"
+    {{did-insert this.loadMessages}}
+    {{did-update this.loadMessages @channel}}
+  >
+    {{yield (hash
+      messages=this.messages
++     actions=(hash
++       createMessage=this.createMessage
++     )
+    )}}
 </main>
 ```
 
