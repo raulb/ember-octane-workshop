@@ -26,7 +26,7 @@ Open your [`config/environment.js`](../config/environment.js), and add a `fastbo
 
 We'll have to refactor our `auth` service so that it doesn't use any browser-specific APIs.
 
-To do this we can install `ember-cookies`, a unified abstraction that can provide us with a way of dealing with cookies both in node and in a browser environment
+To do this we can install `ember-cookies`, a unified abstraction for dealing with cookies both in node and in a browser environment.
 
 ```
 ember install ember-cookies
@@ -34,19 +34,10 @@ ember install ember-cookies
 
 Now let's stop and restart ember-cli -- we should see that the app is now being served with fastboot.
 
-Next, we'll have to make some adjustments to the auth service. Begin by importing the cookie service
-
-```js
-import CookiesService from 'ember-cookies/services/cookies';
-```
-
-and inject the `cookies` service onto the `auth` service
+Next, we'll have to make some adjustments to [`app/services/auth.js`](../app/services/auth.js). Begin by injecting the `cookies` service:
 
 ```ts
- /**
-  * @type {CookiesService}
-  */
- @service cookies;
+@service cookies;
 ```
 
 Update the `loginWithUserId` function so it writes to a cookie instead of `localStorage`
@@ -68,7 +59,7 @@ Update the `currentUserId` getter so it reads from a cookie
    }
 ```
 
-and update `logout so it clears the value from the cookie instead of`localStorage`
+And update `logout` so it clears the value from the cookie instead of`localStorage`:
 
 ```diff
    logout() {
@@ -78,3 +69,9 @@ and update `logout so it clears the value from the cookie instead of`localStorag
    }
  }
 ```
+
+Let’s take the app for a spin and see if we can still log in and out. If we’re very brave we can also try disabling JavaScript in the browser!
+
+## 🙌
+
+Nice! This exercise was a quick introduction to Fastboot and some of the extra stuff we have to consider when writing apps to work in the browser and on the server.
