@@ -15,10 +15,10 @@ Let's begin by injecting the `auth` service, since we will need it in order to o
 
 Next, let's enhance our channel container by implementing a `createMessage` action. This should...
 
-- take a chat message body (a string) as an argument
-- make a `POST` API call with `Content-Type: application/json` header to the `/api/messages` endpoint, with a payload like `{ channelId: 'foo', teamId: 'bar', body: 'hello channel', userId: 123 }`
-- throw an error if the HTTP response cannot be completed, or if the status code looks non-successful
-- add the new message that the server returns to the `this.messages` array
+1. take a chat message body (a string) as an argument
+2. make a `POST` API call with `Content-Type: application/json` header to the `/api/messages` endpoint, with a payload like `{ channelId: 'foo', teamId: 'bar', body: 'hello channel', userId: 123 }`
+3. throw an error if the HTTP response cannot be completed, or if the status code looks non-successful
+4. add the new message that the server returns to the `this.messages` array
 
 ```js
 
