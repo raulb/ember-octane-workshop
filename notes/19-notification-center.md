@@ -1,6 +1,6 @@
 # Singleton-Driven UI - Notification Center
 
-While components are generally reusable, sometimes it's more convenient to use _singleton state_ to drive a component, particularly in cases where many parts of a codebase need to be able to get involved with its behavior. A great example of this kind of pattern is a notification center.
+While container components are a great way to gather together related data and behavior, sometimes it's even more convenient to use a service to gather together data and behavior in a _singleton_. That is, one thing that’s shared across the whole app. This is particularly true when many parts of an app want to to get involved with some data or behavior. A great example of this kind of pattern is a notification center.
 
 ## The Notification Component
 
