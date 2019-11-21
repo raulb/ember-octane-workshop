@@ -147,47 +147,29 @@ First, inject our new `notifications` service onto the `<ChannelContainer>` comp
 + @service notifications;
 ```
 
-Then update `deleteMessage` to send success and failure notifications:
+Then replace the error-handling section of `deleteMessage`:
 
-```diff
-  @action async deleteMessage(message) {
-    const resp = await fetch(
-      `/api/messages/${message.id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
--
--   if (!resp.ok) {
--     const reason = await resp.text();
--     throw new Error(`Problem deleting message: ${reason}`);
--   }
--
--   const idx = this.messages
--     .map(m => m.id)
--     .indexOf(message.id);
--
--   this.messages.splice(idx, 1);
--
--   // "no-op" assignment to trigger an update
--   this.messages = this.messages;
-+
-+   if (resp.ok) {
-+     const idx = this.messages
-+       .map(m => m.id)
-+       .indexOf(message.id);
-+     this.messages.splice(idx, 1);
-+
-+     this.messages = this.messages;
-+
-+     this.notifications.notify('Deleted message');
-+   } else {
-+     this.notifications.notify('Problem deleting message', 'red');
-+   }
-  }
+```js
+if (!resp.ok) {
+  const reason = await resp.text();
+  throw new Error(`Problem deleting message: ${reason}`);
+}
+```
+
+With this:
+
+```js
+if (!resp.ok) {
+  const reason = await resp.text();
+  this.notifications.notify(`Problem deleting message: ${reason}`, 'red');
+  return;
+}
+```
+
+And finally add a success notification if we made it all the way to the end of `deleteMessage`:
+
+```js
+this.notifications.notify('Problem deleting message', 'red');
 ```
 
 Then update `createMessage` in a similar manner:
@@ -243,44 +225,6 @@ Then update `createMessage` in a similar manner:
       { ...newMessage, user: this.auth.currentUser },
     ];
 
-    return newMessage;
-  }
-
-  @action
-  async createMessage(body) {
-    const {
-      channel: { id: channelId, teamId },
-    } = this.args;
-    const resp = await fetch(`/api/messages`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        channelId,
-        teamId,
-        body,
-        userId: this.auth.currentUserId,
-      }),
-    });
-    if (this.isDestroyed || this.isDestroying) return;
-    if (!resp.ok) {
--     throw new Error(
--       'Problem creating message: ' + (await resp.text()));
-+     this.notifications.notify(
-+       'Problem creating message: ' + (await resp.text()),
-+       'red');
-
-+   } else {
-+     this.notifications.notify('Created new message', 'green-dark');
-    }
-
-    const newMessage = await resp.json();
-    if (this.isDestroyed || this.isDestroying) return;
-    this.messages = [
-      ...this.messages,
-      { ...newMessage, user: this.auth.currentUser },
-    ];
     return newMessage;
   }
 ```
