@@ -6,8 +6,8 @@ While container components are a great way to gather together related data and b
 
 Let's begin by generating a `<Notification>` component:
 
-```
-$ ember g component notification
+```sh
+ember g component notification
 ```
 
 Now replace the contents of [`app/components/notification.hbs`](../app/components/notification.hbs) with this:
@@ -51,10 +51,10 @@ In the template above, we can see `{{#if hasBlock}}` -- this is what allows us t
 
 ## The Service
 
-Next, let's build a service to hold the collection of notifications
+Next, let's generate a service to hold the collection of notifications:
 
 ```sh
-ember generate service notifications
+ember g service notifications
 ```
 
 and implement [`app/services/notifications.js`](../app/services/notifications.js) as follows

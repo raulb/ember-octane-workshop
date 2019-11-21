@@ -32,8 +32,8 @@ We’re going to put this logic in the `index` route. `index` routes are rendere
 
 Let’s generate our index route:
 
-```
-$ ember g route index
+```sh
+ember g route index
 ```
 
 Now replace the contents of `app/routes/index.js` with the following:
@@ -65,8 +65,8 @@ For the `teams` route, if there is at least 1 team then let’s display the firs
 
 Let’s generate `teams/index`:
 
-```
-$ ember g route teams/index
+```sh
+ember g route teams/index
 ```
 
 Now replace the contents of `app/routes/teams/index.js` with the following:
@@ -89,8 +89,8 @@ export default class TeamsIndexRoute extends Route {
 
 We’re going to use the same trick for `team/index`, but this time redirecting to the first channel in the team. First, generate the route:
 
-```
-$ ember g route teams/team/index
+```sh
+ember g route teams/team/index
 ```
 
 Then replace the contents

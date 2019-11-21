@@ -114,8 +114,8 @@ Let's take care of the "disable send if the message is blank" functionality firs
 
 Generate a component class for `<ChannelFooter>`:
 
-```
-$ ember g component-class channel-footer
+```sh
+ember g component-class channel-footer
 ```
 
 Now replace the contents of [`app/components/channel-footer.js`](`../app/components/channel-footer.js`)
