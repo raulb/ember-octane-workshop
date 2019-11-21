@@ -194,6 +194,11 @@ Go back to [`app/components/channel-footer.js`](`../app/components/channel-foote
   }
 ```
 
+Give the app a try. We should now be able to create chat messages!
+
 ## 🙌
 
-Fantastic! Give the app a try. We should now be able to create chat messages!
+Fantastic! In this exercise we’ve seen:
+
+1. How to pass actions from container to presentational components
+2. More examples of how to bind actions to HTML elements
