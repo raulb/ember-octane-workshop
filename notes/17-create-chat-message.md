@@ -168,10 +168,10 @@ We can hook this up with a few changes to [`app/components/channel-footer.hbs`](
 Now let's hook up that submit event. Make one more change to [`app/components/channel-footer.hbs`](`../app/components/channel-footer.hbs`), to use the `{{on}}` modifier to fire an `this.onSubmit` action whenever the `<form>` fires its `"submit"` event.
 
 ```diff
-<!-- Channel Footer -->
 <footer class="pb-6 px-4 flex-none channel-footer">
 - <form class="flex w-full rounded-lg border-2 border-grey overflow-hidden" aria-labelledby="message-label">
-+ <form class="flex w-full rounded-lg border-2 border-grey overflow-hidden" aria-labelledby="message-label"
++ <form
++   class="flex w-full rounded-lg border-2 border-grey overflow-hidden" aria-labelledby="message-label"
 +   {{on "submit" this.onSubmit}}
 + >
     <h1 id="message-label" class="sr-only">
