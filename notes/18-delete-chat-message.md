@@ -4,7 +4,7 @@ There's already a delete button in the `<ChatMessage>` component -- we just need
 
 Let’s begin by defining a new action in [`app/components/channel-container.js`](../app/components/channel-container.js) that:
 
-1. Makes a `DELETE` HTTP request to `/api/messages/${message.id}`, with header `Content-Type: application/json`
+1. Makes a `DELETE` HTTP request to `/api/messages/${message.id}`
 2. Throws an error if the request can't be completed for some reason
 3. Removes the appropriate message from the `this.messages` array
 4. Triggers a tracked property update by performing a "no-op" assignment `this.messages = this.messages`
