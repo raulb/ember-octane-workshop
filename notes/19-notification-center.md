@@ -142,9 +142,8 @@ Now all we have left to do is use the service to create notifications in respons
 
 First, inject our new `notifications` service onto the `<ChannelContainer>` component:
 
-```diff
-  @service auth;
-+ @service notifications;
+```js
+@service notifications;
 ```
 
 Then replace the error-handling section of `deleteMessage`:
