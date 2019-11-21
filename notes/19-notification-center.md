@@ -1,6 +1,6 @@
 # Singleton-Driven UI - Notification Center
 
-While container components are a great way to gather together related data and behavior, sometimes it's more convenient to use a service to expose stuff like this as a ”singleton” — a single object that’s shared across the whole app. This is particularly true when many parts of an app want to to get involved with some data or behavior. A great example of this kind of pattern is a notification center.
+While container components are a great way to gather together related data and behavior, sometimes it's more convenient to use a service to expose stuff like this as a ”singleton” — a single object that’s shared across the whole app. This is particularly true when many parts of an app want to get involved with some data or behavior. A great example of this kind of pattern is a notification center.
 
 ## The Notification Component
 
