@@ -4,7 +4,13 @@ In this step, we'll continue to explore the idea of container and presentational
 
 Let's turn our attention to the [`app/components/channel-container.js`](../app/components/channel-container.js) file.
 
-Let's begin by injecting the `auth` service, since we will need it in order to obtain the userId of the currently logged-in user.
+First import the `service` decorator:
+
+```js
+import { inject as service } from '@ember/service';
+```
+
+Then inject the `auth` service, since we will need it in order to obtain the userId of the currently logged-in user:
 
 ```js
 @service auth;
