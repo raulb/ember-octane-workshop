@@ -276,10 +276,21 @@ Create a new file for adding acceptance test at [`../tests/acceptance/forwarding
 +       '/api/teams/gh/channels/prs',
 +       jsonResponse({
 +         id: 'prs',
++         teamId: 'gh',
 +         name: 'Pull Requests',
 +       })
 +     );
-+   }
++     this.get(
++       '/api/teams/gh/channels/prs/messages',
++       jsonResponse([{
++         id: 1,
++         user: {
++           name: 'Testy Testerson',
++         },
++         body: 'Hello Tests',
++        }])
++      );
++    }
 +
 +   module('Acceptance | forwarding routes', function(hooks) {
 +     setupApplicationTest(hooks);
