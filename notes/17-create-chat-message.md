@@ -7,10 +7,7 @@ Let's turn our attention to the [`app/components/channel-container.js`](../app/c
 Let's begin by injecting the `auth` service, since we will need it in order to obtain the userId of the currently logged-in user.
 
 ```js
-  /**
-   * @type {AuthService}
-   */
-  @service auth;
+@service auth;
 ```
 
 Next, let's enhance our channel container by implementing a `createMessage` action. This should...
@@ -52,7 +49,7 @@ Next, let's enhance our channel container by implementing a `createMessage` acti
 
     // If the response was *not OK* then throw an error
     if (!resp.ok) {
-+     const reason = await resp.text();
+      const reason = await resp.text();
       throw new Error(`Problem creating message: ${reason}`);
     }
 
