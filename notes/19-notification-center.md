@@ -146,7 +146,7 @@ First, inject our new `notifications` service onto the `<ChannelContainer>` comp
 @service notifications;
 ```
 
-Then replace the error-handling section of `deleteMessage`:
+Find the error-handling section of `deleteMessage`:
 
 ```js
 if (!resp.ok) {
@@ -155,7 +155,7 @@ if (!resp.ok) {
 }
 ```
 
-With this:
+And replace it with this:
 
 ```js
 if (!resp.ok) {
@@ -165,67 +165,52 @@ if (!resp.ok) {
 }
 ```
 
-And finally add a success notification if we made it all the way to the end of `deleteMessage`:
+And finally add a success notification at the very the end of `deleteMessage`:
 
 ```js
-this.notifications.notify('Deleted message');
+  this.notifications.notify('Deleted message');
+}
 ```
 
-Then update `createMessage` in a similar manner:
+Now we can update `createMessage` in a similar manner.
 
-```diff
-  @action
-  async createMessage(body) {
-    // Grab `channelId` and `teamId` from `this.args`
-    const {
-      channel: { id: channelId, teamId },
-    } = this.args;
+Find the error-handling section of `createMessage`:
 
-    // Make a POST request to /api/message with:
-    // - channelId
-    // - teamId
-    // - body
-    // - the current userId
-    const resp = await fetch(`/api/messages`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        channelId,
-        teamId,
-        body,
-        userId: this.auth.currentUserId,
-      }),
-    });
-
-    // Why’s this important? Let’s discuss as a group...
-    if (this.isDestroyed || this.isDestroying) return;
-
-    // If the response was *not OK* then throw an error
-    if (!resp.ok) {
-      const reason = await resp.text();
--     throw new Error(`Problem creating message: ${reason}`);
-+     this.notifications.notify(`Problem creating message: ${reason}`, 'red');
-+   } else {
-+     this.notifications.notify('Created new message', 'green-dark');
-    }
-
-    // Grab the message data from the response
-    const newMessage = await resp.json();
-
-    // Another one of these...
-    if (this.isDestroyed || this.isDestroying) return;
-
-    // Set `this.messages` to a new array with our brand new message at the end.
-    // We’ll also sneak in an extra `user` property while we’re here for some reason.
-    this.messages = [
-      ...this.messages,
-      { ...newMessage, user: this.auth.currentUser },
-    ];
-
-    return newMessage;
-  }
+```js
+if (!resp.ok) {
+  const reason = await resp.text();
+  throw new Error(`Problem creating message: ${reason}`);
+}
 ```
 
-You should now see notifications upon creation and deletion of messages, both for successful completion of these operations and when the app encounters an error.
+And replace it with this:
+
+
+```js
+if (!resp.ok) {
+  const reason = await resp.text();
+  this.notifications.notify(`Problem creating message: ${reason}`, 'red');
+  return;
+}
+```
+
+Now add a success notification just before the return statement at the end of the method:
+
+```js
+
+  this.notifications.notify('Created new message', 'green-dark');
+
+  return newMessage;
+}
+```
+
+Try out creating and deleting messages. We should now see notifications, both for successful completion of these operations and when the app encounters an error.
+
+## 🙌
+
+Woo-hoo! In this exercise we:
+
+1. Created a new service for notifications
+2. Learned about the concept of “singletons”
+3. Read and displayed notifications from the service into the `<NotificationList>` component 
+4. Pushed notifications into the notifications service from our `<ChannelContainer>` component
