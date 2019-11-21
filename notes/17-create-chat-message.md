@@ -24,10 +24,16 @@ Next, let's enhance our channel container by implementing a `createMessage` acti
 
   @action
   async createMessage(body) {
+    // Grab `channelId` and `teamId` from `this.args`
     const {
       channel: { id: channelId, teamId },
     } = this.args;
 
+    // Make a POST request to /api/message with:
+    // - channelId
+    // - teamId
+    // - body
+    // - the current userId
     const resp = await fetch(`/api/messages`, {
       method: 'POST',
       headers: {
@@ -41,18 +47,24 @@ Next, let's enhance our channel container by implementing a `createMessage` acti
       }),
     });
 
+    // Why’s this important? Let’s discuss as a group...
     if (this.isDestroyed || this.isDestroying) return;
 
+    // If the response was *not OK* then throw an error
     if (!resp.ok) {
       throw new Error(
         'Problem creating message: ' + (await resp.text())
       );
     }
 
+    // Grab the message data from the response
     const newMessage = await resp.json();
 
+    // Another one of these...
     if (this.isDestroyed || this.isDestroying) return;
 
+    // Set `this.messages` to a new array with our brand new message at the end.
+    // We’ll also sneak in an extra `user` property while we’re here for some reason.
     this.messages = [
       ...this.messages,
       { ...newMessage, user: this.auth.currentUser },
