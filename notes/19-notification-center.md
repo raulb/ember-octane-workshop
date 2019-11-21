@@ -33,21 +33,21 @@ Now replace the contents of [`app/components/notification.hbs`](../app/component
 </div>
 ```
 
-This component uses a pattern where we can have a default DOM structure for notifications, in the event we use the "inline form" of the component
+This component renders default HTML when used in “inline form”:
 
 ```hbs
-<Notification @notification=... />
+<Notification @notification={{someNotification}} />
 ```
 
-but can also customize it by using the "block form"
+But it also allows us to use custom HTML in "block form":
 
 ```hbs
-<Notification @notification=... >
+<Notification @notification={{someNotification}}>
   Something custom
 </Notification>
 ```
 
-In the component's `.hbs` file above, you can see a condition based on the `hasBlock` property -- this is what allows us to conditionally render the SVG _only_ when inline form is used.
+In the template above, we can see `{{#if hasBlock}}` -- this is what allows us to conditionally render the SVG _only_ when inline form is used.
 
 ## The Service
 
