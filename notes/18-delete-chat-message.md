@@ -73,7 +73,7 @@ This `{{fn}}` expression:
 @onDelete={{fn ch.actions.deleteMessage message}}
 ```
 
-Is the equivalent of this in JavaScript:
+Is equivalent to this in JavaScript:
 
 ```js
 chatMessage.onDelete = function() { return ch.actions.deleteMessage(message) }
