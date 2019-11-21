@@ -45,7 +45,7 @@ Update the `loginWithUserId` function so it writes to a cookie instead of `local
 ```diff
    async loginWithUserId(userId) {
 -    window.localStorage.setItem(AUTH_KEY, userId);
-+    this.cookies.write(AUTH_KEY, userId);
++    this.cookies.write(AUTH_KEY, userId, {path: '/'});
      this.router.transitionTo('teams');
    }
 ```
@@ -64,7 +64,7 @@ And update `logout` so it clears the value from the cookie instead of`localStora
 ```diff
    logout() {
 -    window.localStorage.removeItem(AUTH_KEY);
-+    this.cookies.write(AUTH_KEY, null);
++    this.cookies.write(AUTH_KEY, null, {path: '/'});
      this.router.transitionTo('login');
    }
  }
