@@ -57,26 +57,26 @@ Open up [`app/teams/team/channel.hbs`](../app/teams/team/channel.hbs) and make t
 -     <ChatMessage @message={{message}} />
 +     <ChatMessage
 +       @message={{message}}
-+       @onDelete={{fn ch.actions.deleteMessage message}}
++       @deleteMessage={{fn ch.actions.deleteMessage message}}
 +     />
     {{/each}}
 ```
 
 In the above, we: 
 
-1. Pass `actions.deleteMessage` to `<ChatMessage>` as `@onDelete`.
+1. Pass `actions.deleteMessage` to `<ChatMessage>` as `@deleteMessage`.
 2. Fill in the first argument of `deleteMessage` using `{{fn}}`
 
 This `{{fn}}` expression:
 
 ```hbs
-@onDelete={{fn ch.actions.deleteMessage message}}
+@deleteMessage={{fn ch.actions.deleteMessage message}}
 ```
 
 Is equivalent to this in JavaScript:
 
 ```js
-chatMessage.onDelete = function() { return ch.actions.deleteMessage(message) }
+chatMessage.deleteMessage = function() { return ch.actions.deleteMessage(message) }
 ```
 
 This is sometimes called “binding” or “currying”. It’s so useful that Ember has `{{fn}}` built-in for just this purpose.
@@ -87,7 +87,7 @@ Finally, let's go into [`app/components/chat-message.hbs`](../app/components/cha
   <button
     class="message__delete-button border-transparent hover:border-red-light show-on-hover hover:bg-red-lightest border-1 rounded mb-1 pl-3 pr-2 py-1"
     aria-label="permanently delete this message"
-+   {{on "click" @onDelete}}
++   {{on "click" @deleteMessage}}
   >
 ```
 
