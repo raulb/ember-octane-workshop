@@ -21,7 +21,7 @@ async model() {
   const response = await fetch('/api/users');
   const users = await response.json();
 
-  return data;
+  return users;
 }
 ```
 
