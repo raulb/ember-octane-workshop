@@ -122,7 +122,7 @@ Let's show the ID of the currently logged in user in the chat sidebar component.
 **BE SURE NOT TO OVERWRITE THE TEMPLATE**
 
 ```sh
-ember generate component team-sidebar
+ember generate component team-sidebar --with-component-class
 ```
 
 in the newly-created [`app/components/team-sidebar.js`](../app/components/team-sidebar.js), add the following service injection
