@@ -119,10 +119,16 @@ and update the `handleSignIn` function to make use of it
 
 Let's show the ID of the currently logged in user in the chat sidebar component. We just have a `.hbs` file so far, so let's upgrade it to a proper component
 
-**BE SURE NOT TO OVERWRITE THE TEMPLATE**
 
 ```sh
-ember generate component team-sidebar --with-component-class
+ember g component team-sidebar --with-component-class
+installing component
+? Overwrite app/components/team-sidebar.hbs? No, skip
+  create app/components/team-sidebar.js
+  skip app/components/team-sidebar.hbs
+installing component-test
+? Overwrite tests/integration/components/team-sidebar-test.js? No, skip
+  skip tests/integration/components/team-sidebar-test.js
 ```
 
 in the newly-created [`app/components/team-sidebar.js`](../app/components/team-sidebar.js), add the following service injection
