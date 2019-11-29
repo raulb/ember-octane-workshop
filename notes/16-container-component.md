@@ -28,7 +28,7 @@ In our app, we're going to use a container component to load channel messages, a
 Let's use ember-cli to create this new component
 
 ```sh
-ember generate component channel-container
+ember generate component channel-container --with-container-class
 ```
 
 This component will hold the `messages` state (and be responsible for managing it). Let's set ourselves up for this properly in [`app/components/channel-container.js`](../app/components/channel-container.js) with the following
