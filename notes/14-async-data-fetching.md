@@ -56,7 +56,7 @@ Now let’s load the list of teams. Replace the existing `model` hook with this:
 ```js
 async model() {
   const response = await fetch('/api/teams');
-  const teams = await resp.json();
+  const teams = await response.json();
 
   return teams;
 }
